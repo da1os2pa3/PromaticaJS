@@ -1,0 +1,327 @@
+<!-- 1 - SETTINGS DEL SISTEMA - Dibujar el formulario de datos de configuracion del sistema -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <!-- Fuente Inter cargada desde Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/settings/settings.css">
+</head>
+
+<div id="contenedorAvisos" class="contenedor-avisos"></div>
+
+<body>
+
+    <!-- Barra superior -->
+    <header class="barra-superior">
+        <div class="empresa-info">
+            <span class="logo-empresa">PM</span>
+            <span class="nombre-empresa">Promatica Computacion</span>
+            <span class="nombre-sistema">| Sistema de Gestión v 1.0</span>
+        </div>
+    </header>
+
+
+    <!-- Cuerpo central de la pantalla -->
+    <main class="cuerpo-principal pantalla-settings">
+
+        <!-- Formulario de settings (oculto al inicio) -->
+        <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+        <!-- Formulario de edición settings -->
+        <div id="vistaFormulario" class="vista-formulario" style="display: block;">
+            <form id="formSettings">
+                <div class="titulo-seccion">
+                    <span class="material-symbols-outlined icono-input">settings</span>
+                    <h2 class="titulo-formulario">Parámetros y Configuración del Sistema</h2>
+                </div>
+
+                <!-- DATOS DE LA EMPRESA, CONFIGURACION Y PARAMETROS DEL SISTEMA -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">badge</span> Datos de la Empresa
+                    </h3>
+                    <div class="grilla-formulario">
+                        <!-- EMPRESA -->
+                        <div class="grupo-input">
+                            <label for="nombre-empresa">Nombre de la Empresa</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">corporate_fare</span>
+                                <input type="text" id="nombre-empresa" name="i_empresa"
+                                    placeholder="Nombre de la Empresa">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DOMICILIO -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">home_pin</span> Domicilio
+                    </h3>
+                    <div class="grilla-formulario">
+                        <div class="grupo-input">
+                            <label for="direccion">Dirección</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">home</span>
+                                <input type="text" id="direccion" name="i_direccion" placeholder="Calle y número">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="localidad">Localidad</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">location_city</span>
+                                <input type="text" id="localidad" name="i_localidad" placeholder="Localidad">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="provincia">Provincia</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">map</span>
+                                <input type="text" id="provincia" name="i_provincia" placeholder="Provincia">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="postal">Código postal</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">markunread_mailbox</span>
+                                <input type="text" id="postal" name="i_postal" placeholder="Código postal">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- CONTACTO -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">contact_phone</span> Contacto
+                    </h3>
+                    <div class="grilla-formulario">
+                        <!-- TELEFONO PERSONAL -->
+                        <div class="grupo-input">
+                            <label for="telef_pers">Teléfono personal</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">call</span>
+                                <input type="text" id="telefono_personal" name="i_telef1"
+                                    placeholder="Teléfono personal">
+                            </div>
+                        </div>
+                        <!-- TELEFONO TRABAJO -->
+                        <div class="grupo-input">
+                            <label for="telefono_trabajo">Teléfono trabajo</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">phone_in_talk</span>
+                                <input type="text" id="telefono_trabajo" name="i_telef2" placeholder="Teléfono trabajo">
+                            </div>
+                        </div>
+                        <!-- CORREO ELECTRONICO -->
+                        <div class="grupo-input">
+                            <label for="mail">Mail</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">mail</span>
+                                <input type="email" id="mail" name="i_correo" placeholder="correo@ejemplo.com">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DATOS FISCALES -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">receipt_long</span> Datos fiscales
+                    </h3>
+                    <div class="grilla-formulario">
+                        <div class="grupo-input">
+                            <label for="sit_fis">Situación fiscal</label>
+                            <select id="sit_fis" name="i_sitfis" class="input-con-icono">
+                                <option value="">Seleccione...</option>
+                                <option value="consumidor-final" selected>Consumidor final</option>
+                                <option value="responsable-inscripto">Responsable inscripto</option>
+                                <option value="exento">Exento</option>
+                                <option value="monotributista">Monotributista</option>
+                                <option value="no-responsable">No responsable</option>
+                            </select>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="cuit">CUIT / DNI</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">fingerprint</span>
+                                <input type="text" id="cuit" name="i_cuit" placeholder="CUIT o DNI">
+                                <span id="errorCuit" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="rentast">Inscripcion Rentas</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">app_registration</span>
+                                <input type="text" id="inscripcion_rentas" name="i_rentas"
+                                    placeholder="Inscripcion Rentas">
+                                <span id="errorRentas" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="municipal">Inscripcion Municipal</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">app_registration</span>
+                                <input type="text" id="inscripcion_municipal" name="i_municip"
+                                    placeholder="Inscripcion Municipal">
+                                <span id="errorMunicipal" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="tasa_iva_uno">Alicuota IVA principal</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa_iva_uno" name="i_iva1" placeholder="Alicuota IVA principal">
+                                <span id="errorIva1" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="tasa_iva_dos">Alicuota IVA reducido</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa_iva_dos" name="i_iva2" placeholder="Alicuota IVA reducido">
+                                <span id="errorIva2" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="tasa_iva_tres">Alicuota IVA futura</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa_iva_tres" name="i_iva3" placeholder="Alicuota IVA futura">
+                                <span id="errorIva3" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="retenciones">Tasa Retenciones</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa_retenciones" name="i_reten" placeholder="Tasa retenciones">
+                                <span id="errorRetenciones" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="percepciones">Tasa Percepciones</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa_percepciones" name="i_percep"
+                                    placeholder="Tasa percepciones">
+                                <span id="errorPercepciones" style="color:red"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- DOLAR Y CARGOS -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">notes</span> Dolar y cargos
+                    </h3>
+                    <div class="grilla-formulario">
+                        <div class="grupo-input">
+                            <label for="cotizacion_dolar_oficial">Cotizacion Dolar oficial</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">money_range</span>
+                                <input type="text" id="cotizacion_dolar_oficial" name="i_dolar1"
+                                    placeholder="Cotizacion dolar oficial">
+                                <span id="errorDolar1" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="cotizacion_dolar_variante">Cotizacion Dolar variante</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">money_range</span>
+                                <input type="text" id="cotizacion_dolar_variante" name="i_dolar2"
+                                    placeholder="Cotizacion dolar variante">
+                                <span id="errorDolar2" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="tasa_cargo_1">Tasa cargo tarjeta 1</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa_cargo_1" name="i_cargo1_tarj"
+                                    placeholder="Tasa cargo tarjeta primaria">
+                                <span id="errorTasa_cargo_1" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="tasa_cargo_2">Tasa cargo tarjeta 2</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa_cargo_2" name="i_cargo2_tarj"
+                                    placeholder="Tasa cargo tarjeta secundaria">
+                                <span id="errorTasa_cargo_2" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="cargo_tarjeta_3">Tasa cargo tarjeta 3</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="cargo_tarjeta_3" name="i_cargo3_tarj"
+                                    placeholder="Tasa cargo tarjeta terciaria">
+                                <span id="errorCargo_tarjeta_3" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="ruta_fotos">Ruta fotos</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">folder</span>
+                                <input type="text" id="ruta_fotos" name="i_ruta_fotos"
+                                    placeholder="Ruta carpeta de fotos">
+                                <span id="errorRuta_fotos" style="color:red"></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- BOTONES FINALES -->
+                <div class="barra-botones-form">
+                    <button id="btnGuardar" class="btn-accion guardar" type="submit">
+                        <span class="material-symbols-outlined">save</span> Guardar
+                    </button>
+                    <button id="btnCancelar" class="btn-accion cancelar" type="button">
+                        <span class="material-symbols-outlined">close</span> Volver
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+    <!-- Modal de confirmación (agregado por seguridad) -->
+    <div id="modalConfirmacion" class="modal-overlay" style="display: none;">
+        <div class="modal-dialog">
+            <h3 class="modal-titulo">Confirmar eliminación</h3>
+            <p id="textoConfirmacion" class="modal-texto">¿Estás seguro de que quieres eliminar este cliente?</p>
+            <div class="modal-botones">
+                <button id="btnCancelarBorrado" class="btn-modal cancelar">Cancelar</button>
+                <button id="btnConfirmarBorrado" class="btn-modal confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje genérico (lo movemos a la raíz) -->
+    <div id="mensaje" class="mensaje" style="display: none;"></div>
+
+    <script src="js/comun.js"></script>
+    <script src="js/settings.js"></script>
+
+</body>
+
+</html>

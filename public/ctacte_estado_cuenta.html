@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de cuenta</title>
+    <!-- Fuente Inter cargada desde Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/clientes/ctacte_estado_cuenta.css">
+</head>
+
+<body>
+
+    <div id="contenedorAvisos" class="contenedor-avisos"></div>
+
+    <header class="barra-superior">
+        <div class="empresa-info">
+            <span class="logo-empresa">PM</span>
+            <span class="nombre-empresa">Promatica Computacion</span>
+            <span class="nombre-sistema">| Estado de cuenta</span>
+        </div>
+    </header>
+
+    <p id="nombreCliente" class="nombre-cliente-cuenta">Cargando...</p>
+
+    <div id="vistaListado" style="display: block;">
+
+        <div class="tabla-contenedor" tabindex="0">
+            <table id="tablaMovimientos">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Detalle</th>
+                        <th>Débito</th>
+                        <th>Crédito</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <p class="saldo-final">Saldo final: <span id="saldoFinal">0,00</span></p>
+
+        <div class="acciones-cuenta controles-gestion">
+            <button type="button" id="btnVolver" class="btn-accion salir">Volver</button>
+            <button type="button" id="btnAjustes" class="btn-accion">Hacer ajustes</button>
+        </div>
+
+    </div>
+
+    <p id="mensajeExito"></p>
+
+    <!-- Formulario de movimientos de ajuste de cuentas corrientes -->
+    <div id="formularioAjusteContenedor" class="formulario-ajuste-contenedor" style="display: none;">
+
+        <form id="formularioAjuste" class="formulario-ajuste panel">
+
+            <fieldset class="fieldset-ajuste">
+                <legend class="legend-ajuste">Ajuste en cuenta corriente</legend>
+
+                <div class="campo">
+                    <div class="grupo-input">
+                        <label for="fechaMov">Fecha del movimiento</label>
+                        <div class="input-con-icono">
+                            <span class="material-symbols-outlined icono-input">calendar_month</span>
+                            <input type="date" id="fechaMov" name="fechaMov">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <div class="grupo-input">
+                        <label for="concepto">Concepto</label>
+                        <div class="input-con-icono">
+                            <span class="material-symbols-outlined icono-input">description</span>
+                            <input type="text" id="concepto" name="concepto" maxlength="50" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <div class="grupo-input">
+                        <label for="montoDeb">Débito</label>
+                        <div class="input-con-icono">
+                            <span class="material-symbols-outlined icono-input">attach_money</span>
+                            <input type="number" id="montoDeb" name="montoDeb" step="0.01" min="0" value="0"
+                                autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <div class="grupo-input">
+                        <label for="montoCre">Crédito</label>
+                        <div class="input-con-icono">
+                            <span class="material-symbols-outlined icono-input">attach_money</span>
+                            <input type="number" id="montoCre" name="montoCre" step="0.01" min="0" value="0"
+                                autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campo-importante">
+                    <p><strong>Importante:</strong> Puede ingresar valores en ambos campos Debito y Credito.</p>
+                </div>
+
+            </fieldset>
+
+            <div class="acciones-formulario">
+                <button type="button" id="btnGuardar" class="btn-accion guardar">
+                    <span class="material-symbols-outlined">save</span>
+                    Registrar ajuste
+                </button>
+                <button type="button" id="btnVolverAjuste" class="btn-accion salir">
+                    Salir de ajustes
+                </button>
+            </div>
+
+            <!-- <p id="mensaje"></p> -->
+
+        </form>
+
+    </div>
+
+    <script src="js/comun.js"></script>
+    <script src="js/ctacte_estado_cuenta.js"></script>
+
+</body>
+
+</html>

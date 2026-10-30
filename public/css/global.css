@@ -1,0 +1,326 @@
+/* ============================================================
+   GLOBAL: reset, variables y elementos comunes a TODAS las pantallas
+   ============================================================ */
+
+/* --- 1. Variables de color --------------------------------------------------------------------- */
+:root {
+    --color-fondo: #1a365d;
+    --color-barra: #0f2342;
+    --color-borde: #2a4a7f;
+    --color-acento: #63b3ed;
+    --color-texto-suave: #a0aec0;
+    --color-texto: #ffffff;
+}
+
+/* --- 2. Reset universal ------------------------------------------------------------------------ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- 3. Fondo general del sistema -------------------------------------------------------------- */
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-fondo);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- 4. Barra superior (se repite en todas las pantallas) -------------------------------------- */
+.barra-superior {
+    height: 60px;
+    background-color: var(--color-barra);
+    color: var(--color-texto);
+    display: flex;
+    position: relative;
+    /* NUEVA: referencia para centrar el título */
+    justify-content: space-between;
+    /* CAMBIADA: antes center */
+    align-items: center;
+    padding: 0 30px;
+    border-bottom: 2px solid var(--color-borde);
+    flex-shrink: 0;
+    /* evita que la barra se achique */
+}
+
+.empresa-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    font-size: 16px;
+    position: absolute;
+    /* NUEVA: lo saca del flujo, el botón no lo mueve */
+    left: 50%;
+    /* NUEVA: su borde izquierdo en la mitad de la barra */
+    transform: translateX(-50%);
+    /* NUEVA: lo corre la mitad de su ancho, queda centrado exacto */
+}
+
+.nombre-empresa {
+    font-weight: bold;
+    color: var(--color-acento);
+}
+
+.nombre-sistema {
+    color: var(--color-texto-suave);
+}
+
+/* --- 5. Logo barra superior -------------------------------------------------------------------- */
+.logo-empresa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background-color: var(--color-acento);
+    color: var(--color-barra);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* --- Menú desplegable -------------------------------------------------------------------------- */
+.menu-principal {
+    position: relative;
+}
+
+.btn-menu {
+    display: inline-flex;
+    /* ícono y texto en una fila */
+    align-items: center;
+    /* alineados verticalmente */
+    gap: 8px;
+    /* separación entre el ícono y "Menú" */
+    background: none;
+    border: 1px solid var(--color-borde);
+    color: var(--color-texto);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-menu:hover {
+    background-color: var(--color-borde);
+}
+
+.menu-desplegable {
+    display: none;
+    /* oculto por defecto */
+    position: absolute;
+    /* flota sin empujar nada */
+    top: calc(100% + 12px);
+    /* debajo del botón, pasando el borde de la barra */
+    left: 0;
+    min-width: 220px;
+    background-color: var(--color-barra);
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    padding: 6px 0;
+    z-index: 100;
+    /* por encima del contenido */
+}
+
+.menu-desplegable.abierto {
+    display: block;
+    /* visible cuando JS le agrega la clase "abierto" */
+}
+
+.menu-item {
+    display: flex;
+    /* ícono y texto en una fila */
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: var(--color-texto);
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    background-color: var(--color-borde);
+}
+
+
+/* -------------------------------------------------------------------------------------------------------- */
+/* Grupo de reglas sobre botones y barra contenedora de botones de formularios */
+/* -------------------------------------------------------------------------------------------------------- */
+
+.btn-accion {
+    background-color: #2b6cb0;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-accion:hover {
+    background-color: #3182ce;
+}
+
+.btn-accion:active {
+    filter: brightness(0.9);
+}
+
+/* --- 1.b VARIANTES DE COLOR --------------------------------------------
+   Se escriben con dos clases (.btn-accion.borrar = 20 puntos), así le
+   ganan al botón base (10 puntos) sin importar el orden.
+   Cada variante tiene su :hover (30 puntos), que le gana al
+   .btn-accion:hover genérico (20 puntos).                                */
+
+/* Buscar y Mostrar todos (barra de búsqueda): mismo azul pero menos padding */
+.btn-accion.secundario {
+    background-color: #2b6cb0;
+    padding: 8px 10px;
+}
+
+.btn-accion.secundario:hover {
+    background-color: #3182ce;
+}
+
+/* Borrar */
+.btn-accion.borrar {
+    background-color: #c53030;
+}
+
+.btn-accion.borrar:hover {
+    background-color: #9b2c2c;
+}
+
+/* Reactivar */
+.btn-accion.reactivar {
+    background-color: #d69e2e;
+}
+
+.btn-accion.reactivar:hover {
+    background-color: #b7791f;
+}
+
+/* Salir */
+.btn-accion.salir {
+    background-color: #4a5568;
+}
+
+.btn-accion.salir:hover {
+    background-color: #2d3748;
+}
+
+/* Guardar (formulario) */
+.btn-accion.guardar {
+    background-color: #2f855a;
+}
+
+.btn-accion.guardar:hover {
+    background-color: #276749;
+}
+
+/* Cancelar (formulario) */
+.btn-accion.cancelar {
+    background-color: #718096;
+}
+
+.btn-accion.cancelar:hover {
+    background-color: #4a5568;
+}
+
+/* ==========================================================================
+   5. BOTONES DE GESTIÓN (debajo de la tabla)
+   --------------------------------------------------------------------------
+   HTML: <div id="controlesGestion" class="controles-gestion">
+             Nuevo | Editar | Borrar | Reactivar | Salir
+   Los colores de cada botón están en el bloque 1.b.
+   ========================================================================== */
+.controles-gestion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #0f2342;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-derecha {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
+
+/* contenedor de los avisos de error, exito, info... arriba a la izquierda en distintos colores */
+.contenedor-avisos {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.aviso {
+    padding: 12px 18px;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.aviso.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.aviso-info {
+    background-color: #2b6cb0;
+}
+
+.aviso-alerta {
+    background-color: #b7791f;
+}
+
+.aviso-exito {
+    background-color: #2f855a;
+}
+
+.aviso-error {
+    background-color: #c53030;
+}
+
+
+/* panel blanco estándar */
+/* panel blanco estándar: tablas, formularios y cualquier bloque de contenido */
+.panel {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.9);
+}
+
+/* Estilo de botones para todos los formulario con inputs */
+.acciones-formulario {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}

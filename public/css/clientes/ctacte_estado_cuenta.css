@@ -1,0 +1,229 @@
+/* PÁGINA ------------------------------------------------------------------------------------------ */
+
+body {
+    margin: 0;
+    padding: 0px;
+}
+
+.acciones-cuenta,
+.tabla-contenedor,
+.saldo-final {
+    width: 95%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.saldo-final {
+    box-sizing: border-box;
+    margin-top: 12px;
+    padding: 10px 16px;
+    text-align: right;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+/* BOTONES ----------------------------------------------------------------------------------------- */
+
+.acciones-cuenta {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+    margin-top: 15px;
+    gap: 16px;
+}
+
+.acciones-cuenta button {
+    padding: 8px 18px;
+    font-size: 1rem;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
+}
+
+#btnVolver {
+    background-color: #6c757d;
+}
+
+#btnVolver:hover {
+    background-color: #565e64;
+}
+
+#btnAjustes {
+    background-color: #2f855a;
+}
+
+#btnAjustes:hover {
+    background-color: #234b6e;
+}
+
+.acciones-cuenta button:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    transform: translateY(2px);
+}
+
+/* TABLA ------------------------------------------------------------------------------------------- */
+
+.tabla-contenedor {
+    max-height: calc(100vh - 280px);
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #d5dbe1;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+#tablaMovimientos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tablaMovimientos th,
+#tablaMovimientos td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e6eaee;
+    text-align: left;
+}
+
+#tablaMovimientos thead th {
+    position: sticky;
+    top: 0;
+    background-color: #2c5f8a;
+    color: #fff;
+}
+
+#tablaMovimientos tbody tr:nth-child(even) {
+    background-color: #f7f9fb;
+}
+
+#tablaMovimientos tbody tr:hover {
+    background-color: #e8f0f7;
+}
+
+#tablaMovimientos th:nth-child(1),
+#tablaMovimientos td:nth-child(1) {
+    width: 110px;
+    white-space: nowrap;
+}
+
+#tablaMovimientos th:nth-child(n+3),
+#tablaMovimientos td:nth-child(n+3) {
+    width: 130px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+#tablaMovimientos tbody tr {
+    cursor: pointer;
+    scroll-margin-top: 40px;
+}
+
+#tablaMovimientos tbody tr.seleccionada,
+#tablaMovimientos tbody tr.seleccionada:hover {
+    background-color: #bcd6ee;
+    font-weight: bold;
+}
+
+/* SALDO FINAL ------------------------------------------------------------------------------------- */
+
+.saldo-final {
+    box-sizing: border-box;
+    margin-top: 12px;
+    padding: 10px 16px;
+    text-align: right;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+.nombre-cliente-cuenta {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding: 0 30px;
+
+}
+
+/* formulario ajustes cuenta ------------------------------------------------------------------  */
+
+/* contenedor principal*/
+/* contenedor: ubica, centra y es lo que el JS muestra u oculta */
+.formulario-ajuste-contenedor {
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+/* caja blanca del formulario */
+.formulario-ajuste {
+    padding: 30px;
+}
+
+/* barra de botones: aire arriba, sin aire abajo */
+
+/* para la linea de marco que tenia */
+.fieldset-ajuste {
+    border: none;
+}
+
+/* titulo formulario */
+.legend-ajuste {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c5f8a;
+    margin-bottom: 20px;
+}
+
+/* Cada campo: etiqueta arriba, input abajo */
+.grupo-input {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.grupo-input label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.input-con-icono {
+    display: flex;
+    align-items: center;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    overflow: hidden;
+}
+
+.input-con-icono:focus-within {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+}
+
+.input-con-icono input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 10px;
+    font-size: 14px;
+    color: #2d3748;
+    outline: none;
+}
+
+.icono-input {
+    padding: 0 10px;
+    color: #a0aec0;
+}

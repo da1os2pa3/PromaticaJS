@@ -1,0 +1,45 @@
+.pagina-centrada {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-despedida {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.contenedor-despedida h1 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.contenedor-despedida p {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.btn-volver {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.btn-volver:hover {
+    background-color: #0056b3;
+}

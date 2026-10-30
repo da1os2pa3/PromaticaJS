@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+    <!-- Fuente Inter cargada desde Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/clientes/clientes.css">
+</head>
+
+<!-- avisos que reemplazan al alert -->
+<div id="contenedorAvisos" class="contenedor-avisos"></div>
+
+<body>
+
+    <header class="barra-superior">
+        <div class="empresa-info">
+            <span class="logo-empresa">PM</span>
+            <span class="nombre-empresa">Promatica Computacion</span>
+            <span class="nombre-sistema">| Clientes</span>
+        </div>
+    </header>
+
+    <main class="cuerpo-principal pantalla-listado">
+
+        <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+        <!-- Linea de arriba de la tabla : orden - filtros y busquedas -->
+        <div id="controlesSuperiores" class="controles-superiores">
+
+            <div class="icono-modulo">👥</div>
+
+            <!-- BLOQUE IZQUIERDO: Búsqueda -->
+            <div class="grupo-filtros-avanzados">
+
+                <!-- BUSQUEDA -->
+                <div class="filtro-item">
+                    <label for="textoBuscar">Buscar:</label>
+                    <div class="input-con-icono">
+                        <span class="material-symbols-outlined icono-input">search</span>
+                        <input type="text" id="textoBuscar" placeholder="Nombre o Razón Social">
+                    </div>
+                    <button id="btnBuscar" class="btn-accion secundario" type="button" title="Buscar">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                    <button id="btnMostrarTodos" class="btn-accion secundario" type="button" title="Mostrar todos">
+                        <span class="material-symbols-outlined">refresh</span>
+                    </button>
+                </div>
+
+                <!-- CAMBIO DE ESTADO -->
+                <div class="filtro-item">
+                    <label for="filtrarEstado">Estado:</label>
+                    <select id="filtrarEstado" class="filtro-estado">
+                        <option value="activo">Solo activos</option>
+                        <option value="inactivo">Solo inactivos</option>
+                        <option value="todos">Todos</option>
+                    </select>
+                </div>
+
+                <!-- SELECT CAMBIO DE ORDEN -->
+                <div class="filtro-item">
+                    <label for="ordenarPor">Ordenar:</label>
+                    <select id="ordenarPor" class="filtro-estado">
+                        <option value="apenombre">Apellido + Nombre</option>
+                        <option value="codigo">Codigo</option>
+                    </select>
+                </div>
+
+                <!-- BLOQUE DERECHO: Ir al inicio / final de la tabla -->
+                <div class="grupo-navegacion">
+                    <button id="btnIrArriba" class="btn-accion secundario" type="button" title="Ir al principio">
+                        <span class="material-symbols-outlined">vertical_align_top</span>
+                    </button>
+                    <button id="btnIrAbajo" class="btn-accion secundario" type="button" title="Ir al final">
+                        <span class="material-symbols-outlined">vertical_align_bottom</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+        <!-- Tabla -->
+        <div id="vistaListado" class="vista-listado">
+            <div class="table-responsive">
+                <div class="tabla-contenedor">
+                    <table id="tablaClientes">
+                        <thead>
+                            <tr>
+                                <th class="col-id">id</th>
+                                <th class="col-codigo">Codigo</th>
+                                <th class="col-apellido">Apellido</th>
+                                <th class="col-nombres">Nombres</th>
+                                <th class="col-direccion">Dirección</th>
+                                <th class="col-localidad">Localidad</th>
+                                <th class="col-provincia">Provincia</th>
+                                <th class="col-postal">Código Postal</th>
+                                <th class="col-telef_pers">Teléfono Personal</th>
+                                <th class="col-telef_trab">Teléfono Trabajo</th>
+                                <th class="col-mail">Mail</th>
+                                <th class="col-sit_fis">Situación Fiscal</th>
+                                <th class="col-cuit">CUIT/DNI</th>
+                                <th class="col-fecha_ingreso">Fecha Ingreso</th>
+                                <th class="col-observaciones">Observaciones</th>
+                                <th class="col-apenombre">Apellido Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaClientes">
+                            <!-- Aquí se insertan las filas de datos -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="mensajeTabla" class="mensaje-tabla" style="display: none;"></div>
+            </div>
+
+            <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+            <!-- Controles de gestión (ocultos al inicio) -->
+            <!-- <div id="controlesGestion" class="controles-gestion" style="display: none;"> -->
+            <!-- Controles de gestión visibles al cargar la pantalla -->
+            <div id="controlesGestion" class="controles-gestion">
+                <button id="btnNuevo" class="btn-accion nuevo"><span class="material-symbols-outlined">add</span>
+                    Nuevo
+                </button>
+                <button id="btnEditar" class="btn-accion editar"><span
+                        class="material-symbols-outlined">edit_note</span>
+                    Editar
+                </button>
+                <button id="btnBorrar" class="btn-accion borrar"><span class="material-symbols-outlined">delete</span>
+                    Borrar
+                </button>
+                <button id="btnReactivar" class="btn-accion reactivar"><span
+                        class="material-symbols-outlined">refresh</span>
+                    Reactivar
+                </button>
+                <button id="btnSalir" class="btn-accion salir">
+                    Salir
+                </button>
+                <button id="btnEstadoCuenta" class="btn-accion secundario btn-derecha" type="button"
+                    title="Ver estado de cuenta del cliente seleccionado">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                    Estado de cuenta
+                </button>
+            </div>
+
+        </div> <!-- NUEVO: cierra vistaListado -->
+
+        <!-- Formulario de carga/edición (oculto al inicio) -->
+        <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+        <!-- Formulario de carga/edición (oculto al inicio) -->
+        <div id="vistaFormulario" class="vista-formulario" style="display: none;">
+            <form id="formCliente">
+                <div class="titulo-seccion">
+                    <div class="icono-modulo">👥</div>
+                    <h2 class="titulo-formulario">Clientes</h2>
+                </div>
+
+                <!-- DATOS PERSONALES -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">badge</span> Datos personales
+                    </h3>
+                    <div class="grilla-formulario">
+                        <div class="grupo-input">
+                            <label for="codigo">Código</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">tag</span>
+                                <input type="text" id="codigo" name="codigo" placeholder="Código interno" readonly>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="apellido">Apellido</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">person</span>
+                                <input type="text" id="apellido" name="apellido" placeholder="Apellido">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="nombres">Nombres</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">person</span>
+                                <input type="text" id="nombres" name="nombres" placeholder="Nombres">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="apenombre">Apellido y nombre / Razón social</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">description</span>
+                                <input type="text" id="apenombre" name="apenombre"
+                                    placeholder="Como se muestra en el listado" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DOMICILIO -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">home_pin</span> Domicilio
+                    </h3>
+                    <div class="grilla-formulario">
+                        <div class="grupo-input">
+                            <label for="direccion">Dirección</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">home</span>
+                                <input type="text" id="direccion" name="direccion" placeholder="Calle y número">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="localidad">Localidad</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">location_city</span>
+                                <input type="text" id="localidad" name="localidad" placeholder="Localidad">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="provincia">Provincia</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">map</span>
+                                <input type="text" id="provincia" name="provincia" placeholder="Provincia">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="postal">Código postal</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">markunread_mailbox</span>
+                                <input type="text" id="postal" name="postal" placeholder="Código postal">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CONTACTO -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">contact_phone</span> Contacto
+                    </h3>
+                    <div class="grilla-formulario">
+                        <div class="grupo-input">
+                            <label for="telef_pers">Teléfono personal</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">call</span>
+                                <input type="text" id="telef_pers" name="telef_pers" placeholder="Teléfono personal">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="telef_trab">Teléfono trabajo</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">phone_in_talk</span>
+                                <input type="text" id="telef_trab" name="telef_trab" placeholder="Teléfono trabajo">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="mail">Mail</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">mail</span>
+                                <input type="email" id="mail" name="mail" placeholder="correo@ejemplo.com">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DATOS FISCALES -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">receipt_long</span> Datos fiscales
+                    </h3>
+                    <div class="grilla-formulario">
+                        <div class="grupo-input">
+                            <label for="sit_fis">Situación fiscal</label>
+                            <select id="sit_fis" name="sit_fis" class="input-con-icono">
+                                <option value="">Seleccione...</option>
+                                <option value="consumidor-final" selected>Consumidor final</option>
+                                <option value="responsable-inscripto">Responsable inscripto</option>
+                                <option value="exento">Exento</option>
+                                <option value="monotributista">Monotributista</option>
+                                <option value="no-responsable">No responsable</option>
+                            </select>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="cuit">CUIT / DNI</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">fingerprint</span>
+                                <input type="text" id="cuit" name="cuit" placeholder="CUIT o DNI">
+                                <span id="errorCuit" style="color:red"></span>
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="fecha_ingreso">Fecha de ingreso</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">calendar_month</span>
+                                <input type="date" id="fecha_ingreso" name="fecha_ingreso" required>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- OBSERVACIONES -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">notes</span> Observaciones
+                    </h3>
+                    <div class="grupo-input">
+                        <textarea id="observaciones" name="observaciones" rows="3"
+                            placeholder="Observaciones"></textarea>
+                    </div>
+                </section>
+
+                <div class="barra-botones-form">
+                    <button id="btnGuardar" class="btn-accion guardar" type="submit">
+                        <span class="material-symbols-outlined">save</span> Guardar
+                    </button>
+                    <button id="btnCancelar" class="btn-accion cancelar" type="button">
+                        <span class="material-symbols-outlined">close</span> Volver
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+    <!-- Modal de confirmación (agregado por seguridad) -->
+    <div id="modalConfirmacion" class="modal-overlay" style="display: none;">
+        <div class="modal-dialog">
+            <h3 class="modal-titulo">Confirmar eliminación</h3>
+            <p id="textoConfirmacion" class="modal-texto">¿Estás seguro de que quieres eliminar este cliente?</p>
+            <div class="modal-botones">
+                <button id="btnCancelarBorrado" class="btn-modal cancelar">Cancelar</button>
+                <button id="btnConfirmarBorrado" class="btn-modal confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje genérico (lo movemos a la raíz) -->
+    <div id="mensaje" class="mensaje" style="display: none;"></div>
+    <script src="js/comun.js"></script>
+    <script src="js/clientes.js"></script>
+</body>
+
+</html>

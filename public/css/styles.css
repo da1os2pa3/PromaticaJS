@@ -1,0 +1,156 @@
+/* El botón verde de operativo -----------------------------------------------------------------*/
+.badge-operativo {
+    background-color: #2f855a;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* --- 3. CUERPO CENTRAL DE LA PANTALLA ------------------------------------------------------- */
+.cuerpo-principal {
+    flex: 1;
+    /* Ocupa todo el espacio restante hacia abajo */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Bloque de Bienvenida ------------------------------------------------------------------------*/
+.bienvenida-box {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.bienvenida-box h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.bienvenida-box p {
+    color: #cbd5e0;
+    font-size: 16px;
+}
+
+/* --- 4. GRILLA DE MÓDULOS (TARJETAS GRANDES) ----------------------------------------------- */
+.grilla-modulos {
+    display: flex;
+    gap: 30px;
+    /* Espacio entre tarjeta y tarjeta */
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Estilo de las Tarjetas (similares a 8x8 cm visuales) --------------------------------------*/
+.tarjeta-modulo {
+    background-color: #ffffff;
+    width: 220px;
+    height: 240px;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+}
+
+/* Pequeño efecto visual cuando pasas el mouse por encima ------------------------------------*/
+.tarjeta-modulo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.icono-modulo {
+    font-size: 40px;
+}
+
+.tarjeta-modulo h3 {
+    font-size: 18px;
+    color: #2d3748;
+}
+
+.tarjeta-modulo p {
+    font-size: 12px;
+    color: #718096;
+    line-height: 1.4;
+}
+
+/* Botón interno de la tarjeta -------------------------------------------------------------*/
+.btn-ingresar {
+    background-color: #3182ce;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.btn-ingresar:hover {
+    background-color: #2b6cb0;
+}
+
+/* --- 5. ESTILOS PARA MÓDULOS EN PLANIFICACIÓN ----------------------------------------- */
+.tarjeta-modulo.en-planificacion {
+    background-color: #edf2f7;
+    /* Un gris claro para diferenciar que no está activo */
+    opacity: 0.85;
+}
+
+/* Badge que dice "En planificación" dentro de la tarjeta -------------------------------*/
+.badge-planificacion {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #d69e2e;
+    /* Color amarillo/naranja de aviso */
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+/* Estilo general para la etiqueta de estado dentro de la tarjeta ------------------------*/
+.badge-estado {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+/* Colores según el estado --------------------------------------------------------------*/
+.badge-estado.operativo {
+    background-color: #2f855a;
+    /* Verde */
+    color: white;
+}
+
+.badge-estado.planificacion {
+    background-color: #d69e2e;
+    /* Amarillo/Naranja de aviso */
+    color: white;
+}
+
+/* Estilo para un botón deshabilitado o de solo aviso ----------------------------------*/
+.btn-ingresar.deshabilitado {
+    background-color: #e2e8f0;
+    color: #a0aec0;
+    pointer-events: none;
+    /* Evita que se pueda hacer clic */
+}

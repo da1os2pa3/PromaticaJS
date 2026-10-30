@@ -1,0 +1,511 @@
+/* ==========================================================================
+   clientes.css  —  estilos SOLO de la pantalla Clientes
+   ==========================================================================
+
+   ORDEN DE CARGA (en clientes.html):
+       1) global.css     (reset, body, barra superior)
+       2) clientes.css   (este archivo)
+       3) styles.css     (.cuerpo-principal, tarjetas de bienvenida, etc.)
+
+   ÍNDICE (sigue el HTML de arriba hacia abajo):
+       1. COMPONENTES REUTILIZADOS   -> botones .btn-accion e input con ícono
+       2. <main>                     -> alto/alineación de la pantalla
+       3. BARRA DE BÚSQUEDA Y FILTROS (.controles-superiores)
+       4. TABLA                      -> #vistaListado, contenedor con scroll, #tablaClientes
+       5. BOTONES DE GESTIÓN         -> Nuevo, Editar, Borrar, Reactivar, Salir
+       6. FORMULARIO                 -> alta y edición (.vista-formulario)
+
+   CÓMO DECIDE EL NAVEGADOR QUÉ REGLA GANA (resumen):
+       a) Gana la regla con MÁS ESPECIFICIDAD, que se cuenta así:
+              id (#algo)                     = 100
+              clase / :hover / :nth-child    =  10  cada una
+              etiqueta (td, tr, th)          =   1  cada una
+          Ejemplos:
+              .btn-accion                    ->  10
+              .btn-accion.borrar             ->  20
+              .btn-accion.borrar:hover       ->  30
+              #tablaClientes td              -> 101
+              #tablaClientes tbody tr:hover td -> 113
+      b) Si EMPATAN en especificidad, gana la que está MÁS ABAJO
+          (y si es de otro archivo, la del archivo que se carga después).
+      c) !important le gana a todo lo anterior. Conviene evitarlo.
+   ========================================================================== */
+
+
+
+/* ==========================================================================
+   1. COMPONENTES REUTILIZADOS
+      Se usan en varios lugares de la pantalla, por eso van primero.
+   ========================================================================== */
+
+/* --- 1.a BOTÓN BASE: .btn-accion ---------------------------------------
+   HTML: todos los <button class="btn-accion ...">
+         (buscar, mostrar todos, Nuevo, Editar, Borrar, Reactivar, Salir,
+          Guardar, Cancelar)
+   Los botones sin variante (Nuevo y Editar) quedan con este azul.        */
+
+
+
+/* ------------------------------------------------------------------------------------------------------ */
+/* --- 1.c INPUT CON ÍCONO 
+   HTML: <div class="input-con-icono"> con un <span class="icono-input">
+         y un <input>.
+   Se usa en el campo "Buscar" de la barra de búsqueda y en todos los
+   campos del formulario.                                                 */
+
+.input-con-icono {
+    display: flex;
+    align-items: center;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    overflow: hidden;
+}
+
+.input-con-icono:focus-within {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+}
+
+.icono-input {
+    padding: 0 10px;
+    color: #a0aec0;
+}
+
+.input-con-icono input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 10px;
+    font-size: 14px;
+    color: #2d3748;
+    outline: none;
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
+
+
+
+/* -------------------------------------------------------------------------------------------------------- */
+/* ==========================================================================
+   2. <main class="cuerpo-principal pantalla-listado">
+   --------------------------------------------------------------------------
+   .cuerpo-principal vive en styles.css y está pensada para la pantalla de
+   bienvenida (contenido centrado). Acá la pisamos solo para Clientes.
+   Gana aunque styles.css se cargue después, porque tiene 2 clases
+   (20 puntos) contra 1 clase (10 puntos) de styles.css.
+   ========================================================================== */
+.cuerpo-principal.pantalla-listado {
+    justify-content: flex-start;
+    /* el contenido arranca arriba, no centrado */
+    align-items: stretch;
+    /* los hijos ocupan todo el ancho */
+    min-height: 0;
+    /* deja que el main se achique al alto de pantalla */
+    overflow-y: auto;
+    /* si no entra, aparece scroll en vez de recortar */
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
+
+
+
+
+/* -------------------------------------------------------------------------------------------------------- */
+
+/* ==========================================================================
+   3. BARRA DE BÚSQUEDA Y FILTROS
+   --------------------------------------------------------------------------
+   ========================================================================== */
+
+
+/* La barra azul oscura entera */
+.controles-superiores {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0f2342;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    gap: 20px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.controles-superiores>.icono-modulo {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* El grupo que contiene los tres filtros */
+.grupo-filtros-avanzados {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Cada filtro: etiqueta + control, en fila */
+.filtro-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+}
+
+/* Los <select> de Estado y Ordenar */
+.filtro-estado {
+    padding: 7px 12px;
+    border-radius: 6px;
+    border: 1px solid #4a5568;
+    background-color: #1a202c;
+    color: white;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+}
+
+.filtro-estado:focus {
+    border-color: #3182ce;
+}
+
+/* (Los botones Buscar y Mostrar todos usan .btn-accion.secundario, en el bloque 1.b) */
+
+.grupo-navegacion {
+    display: flex;
+    gap: 6px;
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
+
+
+
+/* -------------------------------------------------------------------------------------------------------- */
+/* ==========================================================================
+   4. TABLA
+   --------------------------------------------------------------------------
+   HTML: <div id="vistaListado" class="vista-listado">
+             <div class="table-responsive">          <- tarjeta blanca con sombra
+                 <div class="tabla-contenedor">      <- el que tiene el scroll
+                     <table id="tablaClientes"> ...
+   Anidación de afuera hacia adentro:
+       #vistaListado > .table-responsive > .tabla-contenedor > #tablaClientes
+   ========================================================================== */
+
+/* 4.a Vista general del listado */
+#vistaListado {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+/* 4.b Tarjeta exterior: solo da el aspecto (fondo, sombra, bordes).
+       NO debe tener overflow, para no interferir con el sticky del encabezado. */
+.table-responsive {
+    width: 100%;
+    max-width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.9);
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+/* 4.c EL contenedor con scroll (el único que debe tenerlo).
+       El encabezado sticky se pega al borde de ESTE elemento. */
+.tabla-contenedor {
+    width: 100%;
+    max-width: 100%;
+    max-height: 65vh;
+    /* pasada esta altura aparece el scroll vertical */
+    overflow: auto;
+    /* scroll horizontal y vertical solo cuando hace falta */
+    box-sizing: border-box;
+}
+
+/* 4.d La tabla en sí */
+#tablaClientes {
+    width: 100%;
+    min-width: 1300px;
+    /* con 18 columnas, fuerza el scroll horizontal */
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+/* 4.e Celdas: lo que comparten encabezados (th) y datos (td) */
+#tablaClientes th,
+#tablaClientes td {
+    padding: 10px 12px;
+    text-align: left;
+    white-space: nowrap;
+    /* una sola línea por celda */
+}
+
+/* 4.f Encabezados (th) */
+#tablaClientes th {
+    background-color: #2b6cb0;
+    color: white;
+    box-sizing: border-box;
+}
+
+/* Encabezado fijo al scrollear.
+   Va sobre el th (no sobre el thead) y necesita fondo propio (4.f)
+   para que las filas no se vean por detrás. Gana a "#tablaClientes th"
+   porque tiene una etiqueta más (102 contra 101).                        */
+#tablaClientes thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* 4.g Celdas de datos (td) */
+#tablaClientes td {
+    color: #2d3748;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* 4.h Efecto cebra: filas pares.
+       Se aplica al td porque el fondo del td (4.g) tapa al de la fila (tr).
+       113 puntos contra 101 de "#tablaClientes td", por eso gana.        */
+#tablaClientes tbody tr:nth-child(even) td {
+    background-color: #f7fafc;
+}
+
+/* 4.i Hover: va DESPUÉS de la cebra a propósito. Ambas valen 113 puntos,
+       así que si empatan gana la última: el hover le gana a la cebra.    */
+#tablaClientes tbody tr:hover td {
+    background-color: #ebf8ff;
+    cursor: pointer;
+}
+
+/*Fila seleccionada */
+#tablaClientes tbody tr.fila-seleccionada td,
+#tablaClientes tbody tr.seleccionada:hover td {
+    background-color: #bce3ff;
+    font-weight: bold;
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
+
+
+
+/* -------------------------------------------------------------------------------------------------------- */
+/* ==========================================================================
+   6. FORMULARIO DE ALTA / EDICIÓN
+   --------------------------------------------------------------------------
+   HTML: <div id="vistaFormulario" class="vista-formulario">
+             <h2 class="titulo-formulario">
+             <div class="grilla-formulario">
+                 <div class="grupo-input"> label + .input-con-icono (bloque 1.c)
+             <div class="barra-botones-form"> Guardar | Cancelar (bloque 1.b)
+   ========================================================================== */
+
+/* La tarjeta blanca del formulario */
+.vista-formulario {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.titulo-formulario {
+    font-size: 20px;
+    color: #1a365d;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 10px;
+}
+
+/* icono titulo  */
+.titulo-seccion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.titulo-seccion .titulo-formulario {
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    line-height: 1;
+}
+
+.titulo-seccion .icono-modulo {
+    font-size: 28px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Los campos en 2 columnas */
+.grilla-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* Cada campo: etiqueta arriba, input abajo */
+.grupo-input {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.grupo-input label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+/* Secciones del formulario (Datos personales, Domicilio, etc.) */
+.seccion-form {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px 16px 16px;
+    margin-bottom: 16px;
+}
+
+.seccion-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #2b6cb0;
+    color: #2b6cb0;
+    font-size: 15px;
+}
+
+/* El textarea de Observaciones: mismo aspecto que .input-con-icono */
+.grupo-input textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    font-family: inherit;
+    font-size: 14px;
+    color: #2d3748;
+    resize: vertical;
+    outline: none;
+}
+
+.grupo-input textarea:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+}
+
+.grupo-input select {
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background-color: #f8fafc;
+    font-family: inherit;
+    font-size: 14px;
+    color: #2d3748;
+    outline: none;
+    height: 42px;
+    /* se alinea con el input-con-icono */
+}
+
+.grupo-input select:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+}
+
+/* La fila de Guardar / Cancelar */
+.barra-botones-form {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+
+
+/* -------------------------------------------------------------------------------------------------------- */
+/* ========================================================================= */
+/* MODAL confirmacion de borrado de clientes                                */
+/* ========================================================================= */
+
+/* ===== Modal de confirmación ===== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-dialog {
+    background: #fff;
+    padding: 24px 28px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9);
+}
+
+.modal-titulo {
+    margin: 0 0 12px 0;
+    font-size: 1.2rem;
+}
+
+.modal-texto {
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+}
+
+.modal-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-modal {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-modal.cancelar {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.btn-modal.confirmar {
+    background: #d32f2f;
+    color: #fff;
+}
+
+.controles-superiores.desactivada {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* boton estado de cuenta */
+.controles-gestion {
+    position: relative;
+}
+
+/* -------------------------------------------------------------------------------------------------------- */
