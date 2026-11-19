@@ -1,99 +1,6 @@
 /* ==========================================================================
-   clientes.css  —  estilos SOLO de la pantalla Clientes
-   ==========================================================================
-
-   ORDEN DE CARGA (en clientes.html):
-       1) global.css     (reset, body, barra superior)
-       2) clientes.css   (este archivo)
-       3) styles.css     (.cuerpo-principal, tarjetas de bienvenida, etc.)
-
-   ÍNDICE (sigue el HTML de arriba hacia abajo):
-       1. COMPONENTES REUTILIZADOS   -> botones .btn-accion e input con ícono
-       2. <main>                     -> alto/alineación de la pantalla
-       3. BARRA DE BÚSQUEDA Y FILTROS (.controles-superiores)
-       4. TABLA                      -> #vistaListado, contenedor con scroll, #tablaClientes
-       5. BOTONES DE GESTIÓN         -> Nuevo, Editar, Borrar, Reactivar, Salir
-       6. FORMULARIO                 -> alta y edición (.vista-formulario)
-
-   CÓMO DECIDE EL NAVEGADOR QUÉ REGLA GANA (resumen):
-       a) Gana la regla con MÁS ESPECIFICIDAD, que se cuenta así:
-              id (#algo)                     = 100
-              clase / :hover / :nth-child    =  10  cada una
-              etiqueta (td, tr, th)          =   1  cada una
-          Ejemplos:
-              .btn-accion                    ->  10
-              .btn-accion.borrar             ->  20
-              .btn-accion.borrar:hover       ->  30
-              #tablaClientes td              -> 101
-              #tablaClientes tbody tr:hover td -> 113
-      b) Si EMPATAN en especificidad, gana la que está MÁS ABAJO
-          (y si es de otro archivo, la del archivo que se carga después).
-      c) !important le gana a todo lo anterior. Conviene evitarlo.
-   ========================================================================== */
-
-
-
-/* ==========================================================================
-   1. COMPONENTES REUTILIZADOS
-      Se usan en varios lugares de la pantalla, por eso van primero.
-   ========================================================================== */
-
-/* --- 1.a BOTÓN BASE: .btn-accion ---------------------------------------
-   HTML: todos los <button class="btn-accion ...">
-         (buscar, mostrar todos, Nuevo, Editar, Borrar, Reactivar, Salir,
-          Guardar, Cancelar)
-   Los botones sin variante (Nuevo y Editar) quedan con este azul.        */
-
-
-
-/* ------------------------------------------------------------------------------------------------------ */
-/* --- 1.c INPUT CON ÍCONO 
-   HTML: <div class="input-con-icono"> con un <span class="icono-input">
-         y un <input>.
-   Se usa en el campo "Buscar" de la barra de búsqueda y en todos los
-   campos del formulario.                                                 */
-
-.input-con-icono {
-    display: flex;
-    align-items: center;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    background-color: #f8fafc;
-    overflow: hidden;
-}
-
-.input-con-icono:focus-within {
-    border-color: #3182ce;
-    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
-}
-
-.icono-input {
-    padding: 0 10px;
-    color: #a0aec0;
-}
-
-.input-con-icono input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    padding: 10px;
-    font-size: 14px;
-    color: #2d3748;
-    outline: none;
-}
-
-/* -------------------------------------------------------------------------------------------------------- */
-
-
-
-/* -------------------------------------------------------------------------------------------------------- */
-/* ==========================================================================
    2. <main class="cuerpo-principal pantalla-listado">
    --------------------------------------------------------------------------
-   .cuerpo-principal vive en styles.css y está pensada para la pantalla de
-   bienvenida (contenido centrado). Acá la pisamos solo para Clientes.
-   Gana aunque styles.css se cargue después, porque tiene 2 clases
-   (20 puntos) contra 1 clase (10 puntos) de styles.css.
    ========================================================================== */
 .cuerpo-principal.pantalla-listado {
     justify-content: flex-start;
@@ -106,25 +13,17 @@
     /* si no entra, aparece scroll en vez de recortar */
 }
 
-/* -------------------------------------------------------------------------------------------------------- */
-
-
-
-
-/* -------------------------------------------------------------------------------------------------------- */
 
 /* ==========================================================================
    3. BARRA DE BÚSQUEDA Y FILTROS
-   --------------------------------------------------------------------------
    ========================================================================== */
-
 
 /* La barra azul oscura entera */
 .controles-superiores {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #0f2342;
+    background-color: var(--color-barra);
     padding: 12px 20px;
     border-radius: 8px;
     margin-bottom: 15px;
@@ -172,21 +71,21 @@
 }
 
 .filtro-estado:focus {
-    border-color: #3182ce;
+    border-color: var(--color-primario-hover);
 }
 
 /* (Los botones Buscar y Mostrar todos usan .btn-accion.secundario, en el bloque 1.b) */
+
+.btn-accion.secundario {
+    padding: 8px 10px;
+}
+
 
 .grupo-navegacion {
     display: flex;
     gap: 6px;
 }
 
-/* -------------------------------------------------------------------------------------------------------- */
-
-
-
-/* -------------------------------------------------------------------------------------------------------- */
 /* ==========================================================================
    4. TABLA
    --------------------------------------------------------------------------
@@ -211,9 +110,6 @@
 .table-responsive {
     width: 100%;
     max-width: 100%;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.9);
     margin-bottom: 1rem;
     box-sizing: border-box;
 }
@@ -250,7 +146,7 @@
 
 /* 4.f Encabezados (th) */
 #tablaClientes th {
-    background-color: #2b6cb0;
+    background-color: var(--color-primario);
     color: white;
     box-sizing: border-box;
 }
@@ -293,154 +189,6 @@
     font-weight: bold;
 }
 
-/* -------------------------------------------------------------------------------------------------------- */
-
-
-
-/* -------------------------------------------------------------------------------------------------------- */
-/* ==========================================================================
-   6. FORMULARIO DE ALTA / EDICIÓN
-   --------------------------------------------------------------------------
-   HTML: <div id="vistaFormulario" class="vista-formulario">
-             <h2 class="titulo-formulario">
-             <div class="grilla-formulario">
-                 <div class="grupo-input"> label + .input-con-icono (bloque 1.c)
-             <div class="barra-botones-form"> Guardar | Cancelar (bloque 1.b)
-   ========================================================================== */
-
-/* La tarjeta blanca del formulario */
-.vista-formulario {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.titulo-formulario {
-    font-size: 20px;
-    color: #1a365d;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #edf2f7;
-    padding-bottom: 10px;
-}
-
-/* icono titulo  */
-.titulo-seccion {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-bottom: 2px solid #edf2f7;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
-
-.titulo-seccion .titulo-formulario {
-    margin: 0;
-    padding: 0;
-    border-bottom: none;
-    line-height: 1;
-}
-
-.titulo-seccion .icono-modulo {
-    font-size: 28px;
-    line-height: 1;
-    margin: 0;
-    padding: 0;
-}
-
-
-/* Los campos en 2 columnas */
-.grilla-formulario {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-/* Cada campo: etiqueta arriba, input abajo */
-.grupo-input {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.grupo-input label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #4a5568;
-}
-
-/* Secciones del formulario (Datos personales, Domicilio, etc.) */
-.seccion-form {
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 14px 16px 16px;
-    margin-bottom: 16px;
-}
-
-.seccion-titulo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 14px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #2b6cb0;
-    color: #2b6cb0;
-    font-size: 15px;
-}
-
-/* El textarea de Observaciones: mismo aspecto que .input-con-icono */
-.grupo-input textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    background-color: #f8fafc;
-    font-family: inherit;
-    font-size: 14px;
-    color: #2d3748;
-    resize: vertical;
-    outline: none;
-}
-
-.grupo-input textarea:focus {
-    border-color: #3182ce;
-    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
-}
-
-.grupo-input select {
-    box-sizing: border-box;
-    padding: 10px;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    background-color: #f8fafc;
-    font-family: inherit;
-    font-size: 14px;
-    color: #2d3748;
-    outline: none;
-    height: 42px;
-    /* se alinea con el input-con-icono */
-}
-
-.grupo-input select:focus {
-    border-color: #3182ce;
-    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
-}
-
-/* La fila de Guardar / Cancelar */
-.barra-botones-form {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 30px;
-}
-
-
-
-/* -------------------------------------------------------------------------------------------------------- */
 /* ========================================================================= */
 /* MODAL confirmacion de borrado de clientes                                */
 /* ========================================================================= */
@@ -507,5 +255,3 @@
 .controles-gestion {
     position: relative;
 }
-
-/* -------------------------------------------------------------------------------------------------------- */

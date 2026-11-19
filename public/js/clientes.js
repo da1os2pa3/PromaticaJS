@@ -13,12 +13,14 @@ const btnEstadoCuenta = document.getElementById("btnEstadoCuenta");
 // Botones del formulario de carga de clientes 
 const btnGuardar = document.getElementById("btnGuardar");
 const btnCancelar = document.getElementById("btnCancelar");
+
 // barra de búsqueda - linea superior
 const contenedorTabla = document.querySelector(".tabla-contenedor");
 const ordenarPor = document.getElementById("ordenarPor");
 const filtrarEstado = document.getElementById("filtrarEstado");
 const filtrarClientes = document.getElementById("filtrarCliente");
 const textoBuscar = document.getElementById("textoBuscar");
+
 // formulario
 const formulario = document.getElementById("formCliente");
 
@@ -43,6 +45,7 @@ const modalConfirmacion = document.getElementById("modalConfirmacion");
 const textoConfirmacion = document.getElementById("textoConfirmacion");
 const btnCancelarBorrado = document.getElementById("btnCancelarBorrado");
 const btnConfirmarBorrado = document.getElementById("btnConfirmarBorrado");
+
 // Estados iniciales de los botones ----------------------------------------------------------
 btnEditar.disabled = false;
 btnBorrar.disabled = false;
@@ -72,9 +75,6 @@ function renderizarFilas(clientes) {
     cuerpoTabla.innerHTML = "";
     clienteSeleccionado = null;
     indiceFilaActual = -1;
-    btnEditar.disabled = false;
-    btnBorrar.disabled = false;
-    btnReactivar.disabled = false;
 
     const formatearMoneda = (valor) => {
         if (valor === null || valor === undefined || isNaN(valor)) return "$0,00";
@@ -85,20 +85,19 @@ function renderizarFilas(clientes) {
         }).format(valor);
     };
 
+    const formatearFecha = (fecha) => {
+        if (!fecha) return "-";
+        const [anio, mes, dia] = fecha.substring(0, 10).split("-");
+        return `${dia}/${mes}/${anio}`;
+    };
+
     const fragmento = document.createDocumentFragment();
 
     clientes.forEach(cliente => {
 
         const fila = document.createElement("tr");
 
-        const formatearFecha = (fecha) => {
-            if (!fecha) return "-";
-            const [anio, mes, dia] = fecha.substring(0, 10).split("-");
-            return `${dia}/${mes}/${anio}`;
-        };
-
         const fechaIngreso = formatearFecha(cliente.fecha_ingreso);
-        // const importeFormateado = formatearMoneda(usuario.bl_importe);
 
         fila.innerHTML = `
             <td>${cliente.id}</td>
@@ -131,15 +130,6 @@ function renderizarFilas(clientes) {
             fila.classList.add("fila-seleccionada");
             clienteSeleccionado = cliente;
 
-            if (cliente.estado === "inactivo") {
-                // btnEditar.disabled = true;
-                // btnBorrar.disabled = true;
-                // btnReactivar.disabled = true;
-            } else {
-                btnEditar.disabled = false;
-                btnBorrar.disabled = false;
-                btnReactivar.disabled = false;
-            }
         });
 
         fragmento.appendChild(fila);
@@ -153,7 +143,7 @@ function renderizarFilas(clientes) {
 function cargarClientes(orden = ordenarPor.value) {
 
     const estadoSeleccionado = filtrarEstado.value;
-    // const url = `http://localhost:3000/api/clientes?estado=${estadoSeleccionado}`;
+
     const url = `http://localhost:3000/api/clientes?estado=${estadoSeleccionado}&orden=${orden}`;
 
     fetch(url)
@@ -194,6 +184,7 @@ function cargarClientes(orden = ordenarPor.value) {
 
 
 cargarClientes();
+
 
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -425,12 +416,9 @@ btnConfirmarBorrado.addEventListener("click", function () {
             modalConfirmacion.style.display = "none";
             if (error.message === "SIN_PERMISO") {
                 mostrarAviso("✕ No tenés permiso para borrar.", "alerta");
-                // mensajeExito.textContent = "✕ No tenés permiso para borrar.";
             } else {
                 mostrarAviso("✕ No se pudo borrar el cliente.", "error");
-                // mensajeExito.textContent = "✕ No se pudo borrar el cliente.";
             }
-            // mensajeExito.style.color = "red";
         });
 });
 
@@ -439,14 +427,12 @@ btnConfirmarBorrado.addEventListener("click", function () {
 btnReactivar.addEventListener("click", function () {
 
     if (clienteSeleccionado === null) {
-        //alert("Seleccione un cliente para reactivar.");
         mostrarAviso('Seleccioná un cliente para reactivar', 'alerta');
         return;
     }
 
     // VALIDACIÓN: Si ya está activo, frenamos acá
     if (clienteSeleccionado.estado === 'activo') {
-        //("Este cliente ya se encuentra activo.");
         mostrarAviso('Este cliente ya se encuentra activo', 'alerta');
         return;
     }
@@ -462,7 +448,6 @@ btnReactivar.addEventListener("click", function () {
         })
         .then(data => {
             mostrarAviso("✓ Cliente reactivado correctamente)", "exito");
-            // mostrarMensaje("✓ Cliente reactivado correctamente");
             clienteSeleccionado = clienteSeleccionado.id;
             cargarClientes();
             clienteSeleccionado = null;
@@ -470,8 +455,6 @@ btnReactivar.addEventListener("click", function () {
         .catch(error => {
             console.error("Error al reactivar:", error);
             mostrarAviso("✕ No se pudo reactivar.", "error");
-            // mensajeExito.textContent = "✕ No se pudo reactivar.";
-            // mensajeExito.style.color = "red";
         });
 });
 
@@ -504,18 +487,18 @@ btnCancelarBorrado.addEventListener("click", function () {
 });
 
 
-// BOTON SALIR ------------------------------------------------------------------------------------
+// BOTON SALIR ---------------------------------------------------------------------------------------
 btnSalir.addEventListener("click", function () {
     location.href = "/";
 });
 
 
-// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // FORMULARIO (Submit) - GUARDADO
-// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-// GUARDAR - Botón guardar del formulario ----------------------------------------------------------------------
+// GUARDAR - Botón guardar del formulario --------------------------------------------------------------
 formulario.addEventListener("submit", function (event) {
 
     event.preventDefault();
@@ -559,7 +542,6 @@ formulario.addEventListener("submit", function (event) {
             .catch(error => {
                 console.error("Error en fetch:", error);
                 mostrarAviso("✕ No se pudo guardar el cliente.", "error");
-                // mostrarMensaje("✕ No se pudo guardar el cliente.", "red");
             });
 
     } else if (modo === "editar") {
@@ -589,7 +571,6 @@ formulario.addEventListener("submit", function (event) {
             })
             .catch(error => {
                 mostrarAviso("✕ No se pudo guardar el cliente.", "error");
-                // mostrarMensaje("✕ No se pudo guardar el cliente.", "red");
             });
     }
 });
@@ -612,8 +593,7 @@ inputApellido.addEventListener('input', actualizarApNombre);
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-
-// Teclado -------------------------------------------------------------------------------------------
+// Teclado --------------------------------------------------------------------------------------------
 document.addEventListener("keydown", (e) => {
 
     if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "SELECT") {
@@ -668,17 +648,47 @@ function controlarCuit() {
         if (digitos.length === 11) {
             if (!validarCuit(valor)) {
                 mensaje = 'El CUIT no es válido (dígito verificador incorrecto)';
-                //mostrarAviso("✕ El CUIT no es válido (dígito verificador incorrecto)", "error");
             }
         } else if (digitos.length < 7 || digitos.length > 8) {
             mensaje = 'Ingresá un DNI (7 u 8 dígitos) o un CUIT (11 dígitos)';
-            //mostrarAviso("Ingresá un DNI (7 u 8 dígitos) o un CUIT (11 dígitos)", "aviso");
         }
     }
 
     errorCuit.textContent = mensaje;
     inputCuit.setCustomValidity(mensaje);
 }
+
+
+// BOTON ESTADO DE CUENTA ---------------------------------------------------------------------------
+btnEstadoCuenta.addEventListener("click", async function () {
+
+    if (clienteSeleccionado === null) {
+        mostrarAviso('Seleccioná un cliente para ver su estado de cuenta', 'alerta');
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(`/api/ctacte/${clienteSeleccionado.id}`);
+        if (!respuesta.ok) {
+            throw new Error("Error HTTP: " + respuesta.status);
+        }
+        const datos = await respuesta.json();
+
+        if (datos.movimientos.length === 0) {
+            mostrarAviso('El cliente no tiene movimientos', 'alerta');
+            return;
+        }
+
+        window.location.href = `ctacte_estado_cuenta.html?id=${clienteSeleccionado.id}`;
+    } catch (error) {
+        console.error("Error al consultar la cuenta corriente:", error);
+        mostrarAviso('No se pudo consultar la cuenta corriente', 'error');
+    }
+});
+
+
+
+
 
 
 // MENSAJES Y SONIDOS SISTEMA --------------------------------------------------------------------
@@ -708,32 +718,3 @@ function controlarCuit() {
 //     oscilador.start();
 //     oscilador.stop(audioContext.currentTime + 0.12);
 // }
-
-
-
-// BOTON ESTADO DE CUENTA ------------------------------------------------------------------------------
-btnEstadoCuenta.addEventListener("click", async function () {
-
-    if (clienteSeleccionado === null) {
-        mostrarAviso('Seleccioná un cliente para ver su estado de cuenta', 'alerta');
-        return;
-    }
-
-    try {
-        const respuesta = await fetch(`/api/ctacte/${clienteSeleccionado.id}`);
-        if (!respuesta.ok) {
-            throw new Error("Error HTTP: " + respuesta.status);
-        }
-        const datos = await respuesta.json();
-
-        if (datos.movimientos.length === 0) {
-            mostrarAviso('El cliente no tiene movimientos', 'alerta');
-            return;
-        }
-
-        window.location.href = `ctacte_estado_cuenta.html?id=${clienteSeleccionado.id}`;
-    } catch (error) {
-        console.error("Error al consultar la cuenta corriente:", error);
-        mostrarAviso('No se pudo consultar la cuenta corriente', 'error');
-    }
-});

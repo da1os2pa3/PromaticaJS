@@ -1,10 +1,3 @@
-/* PÁGINA ------------------------------------------------------------------------------------------ */
-
-body {
-    margin: 0;
-    padding: 0px;
-}
-
 .acciones-cuenta,
 .tabla-contenedor,
 .saldo-final {
@@ -12,21 +5,6 @@ body {
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
-}
-
-
-.saldo-final {
-    box-sizing: border-box;
-    margin-top: 12px;
-    padding: 10px 16px;
-    text-align: right;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
 }
 
 /* BOTONES ----------------------------------------------------------------------------------------- */
@@ -37,37 +15,6 @@ body {
     margin-bottom: 12px;
     margin-top: 15px;
     gap: 16px;
-}
-
-.acciones-cuenta button {
-    padding: 8px 18px;
-    font-size: 1rem;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
-}
-
-#btnVolver {
-    background-color: #6c757d;
-}
-
-#btnVolver:hover {
-    background-color: #565e64;
-}
-
-#btnAjustes {
-    background-color: #2f855a;
-}
-
-#btnAjustes:hover {
-    background-color: #234b6e;
-}
-
-.acciones-cuenta button:active {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
-    transform: translateY(2px);
 }
 
 /* TABLA ------------------------------------------------------------------------------------------- */
@@ -184,46 +131,4 @@ body {
     font-weight: bold;
     color: #2c5f8a;
     margin-bottom: 20px;
-}
-
-/* Cada campo: etiqueta arriba, input abajo */
-.grupo-input {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.grupo-input label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #4a5568;
-}
-
-.input-con-icono {
-    display: flex;
-    align-items: center;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    background-color: #f8fafc;
-    overflow: hidden;
-}
-
-.input-con-icono:focus-within {
-    border-color: #3182ce;
-    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
-}
-
-.input-con-icono input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    padding: 10px;
-    font-size: 14px;
-    color: #2d3748;
-    outline: none;
-}
-
-.icono-input {
-    padding: 0 10px;
-    color: #a0aec0;
 }

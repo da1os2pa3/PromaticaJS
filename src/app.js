@@ -36,6 +36,22 @@ app.use("/api/ctacte", ctacteRouter);
 
 
 
+// Rutas articulos -----------------------------------------------------------------
+const articulosRoutes = require("./routes/articulos.routes");
+app.use("/api/articulos", articulosRoutes);
+
+// Rutas rubtros -------------------------------------------------------------------
+const rubrosRoutes = require("./routes/rubros.routes");
+app.use("/api/rubros", rubrosRoutes);
+
+// Rutas marcas -------------------------------------------------------------------
+const marcasRoutes = require("./routes/marcas.routes");
+app.use("/api/marcas", marcasRoutes);
+
+
+
+
+
 
 //---------------------------------------------------------------------------------
 

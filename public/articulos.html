@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articulos</title>
+    <!-- Fuente Inter cargada desde Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/articulos/articulos.css">
+</head>
+
+<!-- avisos que reemplazan al alert -->
+<div id="contenedorAvisos" class="contenedor-avisos"></div>
+
+<body>
+
+    <header class="barra-superior">
+        <div class="empresa-info">
+            <span class="logo-empresa">PM</span>
+            <span class="nombre-empresa">Promatica Computacion</span>
+            <span class="nombre-sistema">| Articulos</span>
+        </div>
+    </header>
+
+    <main class="cuerpo-principal pantalla-listado">
+
+        <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+        <!-- Linea de arriba de la tabla : orden - filtros y busquedas -->
+        <div id="controlesSuperiores" class="controles-superiores">
+
+            <div class="icono-modulo">📦</div>
+
+            <!-- BLOQUE IZQUIERDO: Búsqueda -->
+            <div class="grupo-filtros-avanzados">
+
+                <!-- BUSQUEDA -->
+                <div class="filtro-item">
+
+                    <!-- SELECT Filtrar rubros -->
+                    <div class="filtro-item">
+                        <label for="filtrarRubro">Filtrar rubro:</label>
+                        <select id="filtrarRubro" class="filtro-estado">
+                            <option value="todos">Todos</option>
+                        </select>
+                    </div>
+
+                    <!-- SELECT Filtrar marcas -->
+                    <div class="filtro-item">
+                        <label for="filtrarMarca">Filtrar marca:</label>
+                        <select id="filtrarMarca" class="filtro-estado">
+                            <option value="todos">Todos</option>
+                        </select>
+                    </div>
+
+                    <label for="textoBuscar">Buscar:</label>
+                    <div class="input-con-icono">
+                        <span class="material-symbols-outlined icono-input">search</span>
+                        <input type="text" id="textoBuscar" placeholder="Nombre/Descripcion del articulo">
+                    </div>
+                    <button id="btnBuscar" class="btn-accion secundario" type="button" title="Buscar">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                    <button id="btnMostrarTodos" class="btn-accion secundario" type="button" title="Mostrar todos">
+                        <span class="material-symbols-outlined">refresh</span>
+                    </button>
+                </div>
+
+                <!-- CAMBIO DE ESTADO -->
+                <div class="filtro-item">
+                    <label for="filtrarEstado">Estado:</label>
+                    <select id="filtrarEstado" class="filtro-estado">
+                        <option value="activo">Solo activos</option>
+                        <option value="inactivo">Solo inactivos</option>
+                        <option value="todos">Todos</option>
+                    </select>
+                </div>
+
+                <!-- SELECT CAMBIO DE ORDEN -->
+                <div class="filtro-item">
+                    <label for="ordenarPor">Ordenar:</label>
+                    <select id="ordenarPor" class="filtro-estado">
+                        <option value="descripcion">Descripcion</option>
+                        <option value="rubro_marca_descripcion">Rubro+Marca+Descripcion</option>
+                    </select>
+                </div>
+
+                <!-- BLOQUE DERECHO: Ir al inicio / final de la tabla -->
+                <div class="grupo-navegacion">
+                    <button id="btnIrArriba" class="btn-accion secundario" type="button" title="Ir al principio">
+                        <span class="material-symbols-outlined">vertical_align_top</span>
+                    </button>
+                    <button id="btnIrAbajo" class="btn-accion secundario" type="button" title="Ir al final">
+                        <span class="material-symbols-outlined">vertical_align_bottom</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- :::::::::::::::::::::::::::::::::::::::: TABLA :::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+
+        <!-- Tabla -->
+        <div id="vistaListado" class="vista-listado">
+            <div class="table-responsive panel">
+                <div class="tabla-contenedor">
+                    <table id="tablaArticulos">
+                        <thead>
+                            <tr>
+                                <th class="col-id">id</th>
+                                <th class="col-codigo">Codigo</th>
+                                <th class="col-descripcion">Descripcion</th>
+                                <th class="col-marca">Marca</th>
+                                <th class="col-rubro">Rubro</th>
+                                <th class="col-codbar">Codigo de Barras</th>
+                                <th class="col-costodolar">Costo en dolares</th>
+                                <th class="col-iva">TASA IVA</th>
+                                <th class="col-percep">TASA Percepcion</th>
+                                <th class="col-porcgan">TASA Ganancia</th>
+                                <th class="col-observa">Observaciones</th>
+                                <th class="col-ultact">Ultima actualizacion</th>
+                                <th class="col-costohist">Costo Historico</th>
+                                <th class="col-imagen">Imagen</th>
+                                <th class="col-estado">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaArticulos">
+                            <!-- Aquí se insertan las filas de datos -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="mensajeTabla" class="mensaje-tabla" style="display: none;"></div>
+            </div>
+
+            <!-- ::::::::::::::::::::::::::::::::::::: BOTONES :::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+            <!-- Controles de gestión (ocultos al inicio) -->
+            <!-- <div id="controlesGestion" class="controles-gestion" style="display: none;"> -->
+            <!-- Controles de gestión visibles al cargar la pantalla -->
+            <div id="controlesGestion" class="controles-gestion">
+                <button id="btnNuevo" class="btn-accion nuevo"><span class="material-symbols-outlined">add</span>
+                    Nuevo
+                </button>
+                <button id="btnEditar" class="btn-accion editar"><span
+                        class="material-symbols-outlined">edit_note</span>
+                    Editar
+                </button>
+                <button id="btnBorrar" class="btn-accion borrar"><span class="material-symbols-outlined">delete</span>
+                    Borrar
+                </button>
+                <button id="btnReactivar" class="btn-accion reactivar"><span
+                        class="material-symbols-outlined">refresh</span>
+                    Reactivar
+                </button>
+                <button id="btnSalir" class="btn-accion salir">
+                    Salir
+                </button>
+            </div>
+
+        </div> <!-- NUEVO: cierra vistaListado -->
+
+
+        <!-- :::::::::::::::::::::::::::::::::::: FORMULARIO :::::::::::::::::::::::::::::::::::::::::::: -->
+
+
+        <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+        <!-- Formulario de carga/edición (oculto al inicio) -->
+        <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+        <!-- Formulario de carga/edición (oculto al inicio) -->
+        <div id="vistaFormulario" class="vista-formulario panel" style="display: none;">
+
+            <form id="formArticulo">
+                <div class="titulo-seccion">
+                    <div class="icono-modulo">📦</div>
+                    <h2 class="titulo-formulario">Articulos</h2>
+                </div>
+
+                <!-- DATOS IDENTIFICATORIOS -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">badge</span> Datos identificatorios
+                    </h3>
+
+                    <div class="grilla-formulario">
+                        <!-- DESCRIPCION -->
+                        <div class="grupo-input">
+                            <label for="descripcion">Descripcion</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">person</span>
+                                <input type="text" id="descripcion" name="descripcion" placeholder="Descripcion">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grilla-formulario">
+                        <!-- CODIGO -->
+                        <div class="grupo-input">
+                            <label for="codigo">Código</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">tag</span>
+                                <input type="text" id="codigo" name="codigo" placeholder="Código interno" readonly>
+                            </div>
+                        </div>
+                        <!-- MARCA -->
+                        <div class="grupo-input">
+                            <label for="marca">Marca</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">person</span>
+                                <input type="text" id="marca" name="marca" placeholder="Marca">
+                            </div>
+                        </div>
+                        <!-- RUBRO -->
+                        <div class="grupo-input">
+                            <label for="rubro">Rubro</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">description</span>
+                                <input type="text" id="rubro" name="rubro" placeholder="Rubro">
+                            </div>
+                        </div>
+                        <!-- CODIGO DE BARRAS -->
+                        <div class="grupo-input">
+                            <label for="codigo-barras">Codigo de barras</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">description</span>
+                                <input type="text" id="codigo-barras" name="codbar" placeholder="Codigo de barras">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MONETARIO Y TASAS -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">home_pin</span> Costos-Precio de Venta-Tasas
+                    </h3>
+                    <div class="grilla-formulario">
+                        <!-- COSTO NETO DOLAR -->
+                        <div class="grupo-input">
+                            <label for="costo-dolar">Costo dolar neto</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">home</span>
+                                <input type="text" id="costo-dolar" name="costodolar"
+                                    placeholder="Importe neto costo dolar">
+                            </div>
+                        </div>
+                        <!-- TASA IVA -->
+                        <div class="grupo-input">
+                            <label for="tasa-iva">Alicuota IVA</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">location_city</span>
+                                <input type="text" id="tasa-iva" name="iva" placeholder="Alicuota IVA">
+                            </div>
+                        </div>
+                        <!-- TASA Percepcion -->
+                        <div class="grupo-input">
+                            <label for="tasa-percepcion">TASA Percepcion</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">map</span>
+                                <input type="text" id="tasa-percepcion" name="percep" placeholder="TASA percepciones">
+                            </div>
+                        </div>
+                        <!-- TASA Ganancia -->
+                        <div class="grupo-input">
+                            <label for="tasa-ganancia">TASA ganancia</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">markunread_mailbox</span>
+                                <input type="text" id="tasa-ganancia" name="porcgan" placeholder="TASA Ganancia">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- INFORMACION COMPLEMENTARIA -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">contact_phone</span> Complementarios
+                    </h3>
+                    <div class="grilla-formulario">
+                        <!-- Observaciones -->
+                        <div class="grupo-input">
+                            <label for="observaciones">Observaciones</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">call</span>
+                                <input type="text" id="observaciones" name="observa" placeholder="Observaciones">
+                            </div>
+                        </div>
+                        <!-- Fecha ultima actualizacion -->
+                        <div class="grupo-input">
+                            <label for="fecha_ultima_actualizacion">Fecha de ultima actualizacion</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">phone_in_talk</span>
+                                <input type="text" id="fecha_ultima_actualizacion" name="ultact"
+                                    placeholder="Fecha ultima actualizacion">
+                            </div>
+                        </div>
+                        <!-- Costo historico en dolares neto -->
+                        <div class="grupo-input">
+                            <label for="costo-historico">Costo historico dolares</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">mail</span>
+                                <input type="text" id="costo-historico" name="costohist"
+                                    placeholder="Costo historico neto en dolares">
+                            </div>
+                        </div>
+                        <!-- ruta de la imagen -->
+                        <div class="grupo-input">
+                            <label for="ruta-imagen">Ruta imagen articulo</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">mail</span>
+                                <input type="text" id="ruta-imagen" name="imagen"
+                                    placeholder="Ruta ubicacion de la imagen">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <!-- DESGLOSE DE PRECIO -->
+                <section class="seccion-form">
+                    <h3 class="seccion-titulo">
+                        <span class="material-symbols-outlined">contact_phone</span> Desglose de precio
+                    </h3>
+                    <div class="grilla-formulario">
+                        <!-- Importe neto en pesos - neto dolar * valor del dolar hoy -->
+                        <div class="grupo-input">
+                            <label for="neto-pesos">Importe neto en pesos</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">call</span>
+                                <input type="text" id="neto-pesos" name="importe-neto-pesos"
+                                    placeholder="Importe neto en pesos">
+                            </div>
+                        </div>
+
+                        <!-- // importe del iva
+                        // importe de la percepciones
+                        // importe costo bruto en pesos (neto pesos + iva + percepcion)
+                        // importe de la ganancia
+                        // importe precio final venta ( costo bruto pesos + importe de la ganancia)
+                        // importe del recargo tarjeta
+                        // importe venta con recargo por tarjets -->
+
+
+                        <!-- Fecha ultima actualizacion -->
+                        <div class="grupo-input">
+                            <label for="fecha_ultima_actualizacion">Fecha de ultima actualizacion</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">phone_in_talk</span>
+                                <input type="text" id="fecha_ultima_actualizacion" name="ultact"
+                                    placeholder="Fecha ultima actualizacion">
+                            </div>
+                        </div>
+                        <!-- Costo historico en dolares neto -->
+                        <div class="grupo-input">
+                            <label for="costo-historico">Costo historico dolares</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">mail</span>
+                                <input type="text" id="costo-historico" name="costohist"
+                                    placeholder="Costo historico neto en dolares">
+                            </div>
+                        </div>
+                        <!-- ruta de la imagen -->
+                        <div class="grupo-input">
+                            <label for="ruta-imagen">Ruta imagen articulo</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">mail</span>
+                                <input type="text" id="ruta-imagen" name="imagen"
+                                    placeholder="Ruta ubicacion de la imagen">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+
+
+
+
+
+
+
+
+                <div class="acciones-formulario">
+                    <button id="btnGuardar" class="btn-accion guardar" type="submit">
+                        <span class="material-symbols-outlined">save</span> Guardar
+                    </button>
+                    <button id="btnCancelar" class="btn-accion cancelar" type="button">
+                        <span class="material-symbols-outlined">close</span> Volver
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+    <!-- Mensaje genérico (lo movemos a la raíz) -->
+    <div id="mensaje" class="mensaje" style="display: none;"></div>
+    <script src="js/comun.js"></script>
+    <script src="js/articulos.js"></script>
+
+</body>
+
+</html>

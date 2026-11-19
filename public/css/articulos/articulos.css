@@ -1,0 +1,268 @@
+.cuerpo-principal.pantalla-listado {
+    justify-content: flex-start;
+    /* el contenido arranca arriba, no centrado */
+    align-items: stretch;
+    /* los hijos ocupan todo el ancho */
+    min-height: 0;
+    /* deja que el main se achique al alto de pantalla */
+    overflow-y: auto;
+    /* si no entra, aparece scroll en vez de recortar */
+}
+
+
+/* ==========================================================================
+   3. BARRA DE BÚSQUEDA Y FILTROS
+   ========================================================================== */
+
+/* La barra azul oscura entera */
+.controles-superiores {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-barra);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    gap: 20px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.controles-superiores>.icono-modulo {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* El grupo que contiene los tres filtros */
+.grupo-filtros-avanzados {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Cada filtro: etiqueta + control, en fila */
+.filtro-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+}
+
+/* Los <select> de Estado y Ordenar */
+.filtro-estado {
+    padding: 7px 12px;
+    border-radius: 6px;
+    border: 1px solid #4a5568;
+    background-color: #1a202c;
+    color: white;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+}
+
+.filtro-estado:focus {
+    border-color: var(--color-primario-hover);
+}
+
+.grupo-navegacion {
+    display: flex;
+    gap: 6px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================================
+   4. TABLA
+   --------------------------------------------------------------------------
+   HTML: <div id="vistaListado" class="vista-listado">
+             <div class="table-responsive">          <- tarjeta blanca con sombra
+                 <div class="tabla-contenedor">      <- el que tiene el scroll
+                     <table id="tablaClientes"> ...
+   Anidación de afuera hacia adentro:
+       #vistaListado > .table-responsive > .tabla-contenedor > #tablaArticulos
+   ========================================================================== */
+
+/* 4.a Vista general del listado */
+#vistaListado {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+/* 4.b Tarjeta exterior: solo da el aspecto (fondo, sombra, bordes).
+       NO debe tener overflow, para no interferir con el sticky del encabezado. */
+.table-responsive {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+/* 4.c EL contenedor con scroll (el único que debe tenerlo).
+       El encabezado sticky se pega al borde de ESTE elemento. */
+.tabla-contenedor {
+    width: 100%;
+    max-width: 100%;
+    max-height: 65vh;
+    /* pasada esta altura aparece el scroll vertical */
+    overflow: auto;
+    /* scroll horizontal y vertical solo cuando hace falta */
+    box-sizing: border-box;
+}
+
+/* 4.d La tabla en sí */
+#tablaArticulos {
+    width: 100%;
+    min-width: 1300px;
+    /* con 18 columnas, fuerza el scroll horizontal */
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+/* 4.e Celdas: lo que comparten encabezados (th) y datos (td) */
+#tablaArticulos th,
+#tablaArticulos td {
+    padding: 10px 12px;
+    text-align: left;
+    white-space: nowrap;
+    /* una sola línea por celda */
+}
+
+/* 4.f Encabezados (th) */
+#tablaArticulos th {
+    background-color: var(--color-primario);
+    color: white;
+    box-sizing: border-box;
+}
+
+/* Encabezado fijo al scrollear.
+   Va sobre el th (no sobre el thead) y necesita fondo propio (4.f)
+   para que las filas no se vean por detrás. Gana a "#tablaClientes th"
+   porque tiene una etiqueta más (102 contra 101).                        */
+#tablaArticulos thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* 4.g Celdas de datos (td) */
+#tablaArticulos td {
+    color: #2d3748;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* 4.h Efecto cebra: filas pares.
+       Se aplica al td porque el fondo del td (4.g) tapa al de la fila (tr).
+       113 puntos contra 101 de "#tablaClientes td", por eso gana.        */
+#tablaArticulos tbody tr:nth-child(even) td {
+    background-color: #f7fafc;
+}
+
+/* 4.i Hover: va DESPUÉS de la cebra a propósito. Ambas valen 113 puntos,
+       así que si empatan gana la última: el hover le gana a la cebra.    */
+#tablaArticulos tbody tr:hover td {
+    background-color: #ebf8ff;
+    cursor: pointer;
+}
+
+/*Fila seleccionada */
+#tablaArticulos tbody tr.fila-seleccionada td,
+#tablaArticulos tbody tr.seleccionada:hover td {
+    background-color: #bce3ff;
+    font-weight: bold;
+}
+
+/* ========================================================================= */
+/* MODAL confirmacion de borrado de clientes                                */
+/* ========================================================================= */
+
+/* ===== Modal de confirmación ===== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-dialog {
+    background: #fff;
+    padding: 24px 28px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9);
+}
+
+.modal-titulo {
+    margin: 0 0 12px 0;
+    font-size: 1.2rem;
+}
+
+.modal-texto {
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+}
+
+.modal-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-modal {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-modal.cancelar {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.btn-modal.confirmar {
+    background: #d32f2f;
+    color: #fff;
+}
+
+.controles-superiores.desactivada {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* boton estado de cuenta */
+.controles-gestion {
+    position: relative;
+}
+
+
+/* Agrego esta regla para darle al ladescripcion del articulo el ancho completo de las dos columnas */
+.grupo-input:has(#descripcion) {
+    grid-column: 1 / -1;
+    margin-bottom: 10px;
+}
+
+.input-con-icono input {
+    width: 100%;
+    box-sizing: border-box;
+}
