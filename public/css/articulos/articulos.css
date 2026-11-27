@@ -266,3 +266,140 @@
     width: 100%;
     box-sizing: border-box;
 }
+
+
+
+
+/* --------------------------------------------------------------------------------------------------- */
+/* Estas reglas se agregaron cuando se modifico el formulario de 
+articulos para hacer espacio para la imagen del articulo */
+/* --------------------------------------------------------------------------------------------------- */
+
+
+/* ===== Datos identificatorios: 2/3 campos + 1/3 imagen ===== */
+.identificatorios {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.identificatorios-campos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* la fila de descripción ocupa todo el ancho de los dos tercios */
+.identificatorios-campos .grilla-formulario:first-child {
+    grid-template-columns: 1fr;
+}
+
+/* columna de la imagen */
+.imagen-articulo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.imagen-marco {
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #a0aec0;
+    overflow: hidden;
+}
+
+.imagen-marco .material-symbols-outlined {
+    font-size: 48px;
+}
+
+.imagen-marco img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: zoom-in;
+}
+
+/* --------------------------------------------------------------------------------------------------- */
+
+
+
+
+/* --------------------------------------------------------------------------------------------------- */
+/* AMPLIACION DE LA IMAGEN DEL ARTICULO */
+/* --------------------------------------------------------------------------------------------------- */
+
+/* ===== Ventana con la imagen ampliada ===== */
+.dialogo-imagen {
+    margin: auto;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ffffff;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.dialogo-imagen::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dialogo-imagen img {
+    display: block;
+    width: min(400px, 85vw, 80vh);
+    height: min(400px, 85vw, 80vh);
+    object-fit: contain;
+}
+
+
+
+
+
+/* destacado de campos de precios visualmente en formulario */
+/* ---- Precios de venta destacados ---- */
+.grupo-input.precio-destacado label {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.grupo-input.precio-destacado .input-con-icono input {
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.grupo-input.precio-lista .input-con-icono input {
+    background-color: #e8f5e9;
+    border-color: #2e7d32;
+    color: #1b5e20;
+}
+
+.grupo-input.precio-recargo .input-con-icono input {
+    background-color: #e3f2fd;
+    border-color: #1565c0;
+    color: #0d47a1;
+}
+
+
+
+/* ---- Costo bruto (nivel medio) ---- */
+.grupo-input.precio-medio label {
+    font-weight: 600;
+}
+
+.grupo-input.precio-medio .input-con-icono input {
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color: #fff8e1;
+    border: 1px solid #f9a825;
+    color: #5d4037;
+}

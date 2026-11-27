@@ -105,8 +105,7 @@
 
         </div>
 
-        <!-- :::::::::::::::::::::::::::::::::::::::: TABLA :::::::::::::::::::::::::::::::::::::::::::::::::::: -->
-
+        <!-- :::::::::::::::::::::::::::::::::::::::: TABLA :::::::::::::::::::::::::::::::::::::::::::::::::: -->
 
         <!-- Tabla -->
         <div id="vistaListado" class="vista-listado">
@@ -184,211 +183,238 @@
                     <h2 class="titulo-formulario">Articulos</h2>
                 </div>
 
-                <!-- DATOS IDENTIFICATORIOS -->
+                <!-- DATOS IDENTIFICATORIOS ------------------------------------------------------------->
                 <section class="seccion-form">
                     <h3 class="seccion-titulo">
                         <span class="material-symbols-outlined">badge</span> Datos identificatorios
                     </h3>
 
-                    <div class="grilla-formulario">
-                        <!-- DESCRIPCION -->
-                        <div class="grupo-input">
-                            <label for="descripcion">Descripcion</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">person</span>
-                                <input type="text" id="descripcion" name="descripcion" placeholder="Descripcion">
-                            </div>
-                        </div>
-                    </div>
+                    <div class="identificatorios">
+                        <!-- columna izquierda: tus dos grillas, tal como están -->
+                        <div class="identificatorios-campos">
 
-                    <div class="grilla-formulario">
-                        <!-- CODIGO -->
-                        <div class="grupo-input">
-                            <label for="codigo">Código</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">tag</span>
-                                <input type="text" id="codigo" name="codigo" placeholder="Código interno" readonly>
+                            <div class="grilla-formulario">
+                                <!-- DESCRIPCION -->
+                                <div class="grupo-input">
+                                    <label for="descripcion">Descripcion</label>
+                                    <div class="input-con-icono">
+                                        <span class="material-symbols-outlined icono-input">description</span>
+                                        <input type="text" id="descripcion" name="descripcion"
+                                            placeholder="Descripcion">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grilla-formulario">
+                                <!-- CODIGO -->
+                                <div class="grupo-input">
+                                    <label for="codigo">Código</label>
+                                    <div class="input-con-icono">
+                                        <span class="material-symbols-outlined icono-input">tag</span>
+                                        <input type="text" id="codigo" name="codigo" placeholder="Código interno">
+                                    </div>
+                                </div>
+                                <!-- CODIGO DE BARRAS -->
+                                <div class="grupo-input">
+                                    <label for="codigo-barras">Codigo de barras</label>
+                                    <div class="input-con-icono">
+                                        <span class="material-symbols-outlined icono-input">barcode</span>
+                                        <input type="text" id="codigo-barras" name="codbar"
+                                            placeholder="Codigo de barras">
+                                    </div>
+                                </div>
+                                <!-- MARCA -->
+                                <div class="grupo-input">
+                                    <label for="marca">Marca</label>
+                                    <select id="marca" class="marca" name="marca_id">
+                                        <option value="">Seleccionar marca</option>
+                                    </select>
+                                </div>
+                                <!-- RUBRO -->
+                                <div class="grupo-input">
+                                    <label for="rubro">Rubro</label>
+                                    <select id="rubro" class="rubro" name="rubro_id">
+                                        <option value="">Seleccionar rubro</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <!-- MARCA -->
-                        <div class="grupo-input">
-                            <label for="marca">Marca</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">person</span>
-                                <input type="text" id="marca" name="marca" placeholder="Marca">
+
+                        <!-- columna derecha: imagen del artículo -->
+                        <div class="imagen-articulo">
+                            <div class="imagen-marco">
+                                <span class="material-symbols-outlined">image</span>
+                                <img id="imagen-vista" alt="Imagen del artículo" hidden>
                             </div>
-                        </div>
-                        <!-- RUBRO -->
-                        <div class="grupo-input">
-                            <label for="rubro">Rubro</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">description</span>
-                                <input type="text" id="rubro" name="rubro" placeholder="Rubro">
-                            </div>
-                        </div>
-                        <!-- CODIGO DE BARRAS -->
-                        <div class="grupo-input">
-                            <label for="codigo-barras">Codigo de barras</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">description</span>
-                                <input type="text" id="codigo-barras" name="codbar" placeholder="Codigo de barras">
-                            </div>
+                            <button id="btnSeleccionarImagen" class="btn-accion secundario" type="button">
+                                Seleccionar imagen
+                            </button>
+                            <input type="file" id="archivo-imagen" accept="image/*" hidden>
                         </div>
                     </div>
                 </section>
 
-                <!-- MONETARIO Y TASAS -->
+
+                <!-- PRECIO DE VENTA-COSTOS Y TASAS ------------------------------------------------------>
                 <section class="seccion-form">
                     <h3 class="seccion-titulo">
-                        <span class="material-symbols-outlined">home_pin</span> Costos-Precio de Venta-Tasas
+                        <span class="material-symbols-outlined">paid</span> Precio de Venta-Costos-Tasas
                     </h3>
                     <div class="grilla-formulario">
                         <!-- COSTO NETO DOLAR -->
                         <div class="grupo-input">
                             <label for="costo-dolar">Costo dolar neto</label>
                             <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">home</span>
+                                <span class="material-symbols-outlined icono-input">paid</span>
                                 <input type="text" id="costo-dolar" name="costodolar"
                                     placeholder="Importe neto costo dolar">
                             </div>
                         </div>
+                        <!-- COTIZACION DOLAR HOY -->
+                        <div class="grupo-input">
+                            <label for="cotizacion-dolar">Cotizacion dolar</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">paid</span>
+                                <input type="text" id="cotizacion-dolar" name="cotizacion-dolar"
+                                    placeholder="Cotizacion del dolar hoy" readonly>
+                            </div>
+                        </div>
+                        <!-- Costo neto en pesos -->
+                        <div class="grupo-input">
+                            <label for="costo-neto-pesos">Costo neto en pesos</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">attach_money</span>
+                                <input type="text" id="costo-neto-pesos" name="calc_costo_neto_pesos"
+                                    placeholder="Calculado" readonly>
+                            </div>
+                        </div>
+                        <!-- Costo bruto en pesos -->
+                        <div class="grupo-input precio-medio">
+                            <label for="costo-bruto-pesos">Costo bruto en pesos</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">attach_money</span>
+                                <input type="text" id="costo-bruto-pesos" name="calc_costo_bruto_pesos"
+                                    placeholder="Calculado" readonly>
+                            </div>
+                        </div>
                         <!-- TASA IVA -->
                         <div class="grupo-input">
-                            <label for="tasa-iva">Alicuota IVA</label>
+                            <label for="tasa-iva">% Alicuota IVA</label>
+                            <!-- <span class="material-symbols-outlined icono-input"> percent</span> -->
+                            <select id="tasa-iva" class="tasa-iva" name="iva">
+                                <!-- <option value="21">21%</option>
+                                <option value="10.5">10.5%</option> -->
+                            </select>
+                        </div>
+                        <!-- importe IVA en pesos -->
+                        <div class="grupo-input">
+                            <label for="importe_iva_pesos">Importe IVA en pesos</label>
                             <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">location_city</span>
-                                <input type="text" id="tasa-iva" name="iva" placeholder="Alicuota IVA">
+                                <span class="material-symbols-outlined icono-input">attach_money</span>
+                                <input type="text" id="importe_iva_pesos" name="calc_importe_iva_pesos"
+                                    placeholder="Calculado" readonly>
                             </div>
                         </div>
                         <!-- TASA Percepcion -->
                         <div class="grupo-input">
-                            <label for="tasa-percepcion">TASA Percepcion</label>
+                            <label for="tasa-percepcion">% TASA Percepcion</label>
                             <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">map</span>
-                                <input type="text" id="tasa-percepcion" name="percep" placeholder="TASA percepciones">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa-percepcion" name="percep" placeholder="TASA percepciones"
+                                    readonly>
+                            </div>
+                        </div>
+                        <!-- importe percepcionen pesos -->
+                        <div class="grupo-input">
+                            <label for="importe_percepcion_pesos">Importe percepciones en pesos</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">attach_money</span>
+                                <input type="text" id="importe_percepcion_pesos" name="calc_importe_percepcion_pesos"
+                                    placeholder="Calculado" readonly>
                             </div>
                         </div>
                         <!-- TASA Ganancia -->
                         <div class="grupo-input">
-                            <label for="tasa-ganancia">TASA ganancia</label>
+                            <label for="tasa-ganancia">% TASA ganancia</label>
                             <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">markunread_mailbox</span>
-                                <input type="text" id="tasa-ganancia" name="porcgan" placeholder="TASA Ganancia">
+                                <span class="material-symbols-outlined icono-input">percent</span>
+                                <input type="text" id="tasa-ganancia" name="porcgan"
+                                    placeholder="TASA Ganancia Modificable">
+                            </div>
+                        </div>
+                        <!-- importe ganancia en pesos -->
+                        <div class="grupo-input">
+                            <label for="importe_ganancia_pesos">Importe ganancia en pesos</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">attach_money</span>
+                                <input type="text" id="importe_ganancia_pesos" name="calc_importe_ganancia_pesos"
+                                    placeholder="Calculado" readonly>
+                            </div>
+                        </div>
+                        <!-- Precio venta de lista en pesos -->
+                        <div class="grupo-input precio-destacado precio-lista">
+                            <label for="precio_venta_lista_pesos">Precio venta de lista en pesos</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">attach_money</span>
+                                <input type="text" id="precio_venta_lista_pesos" name="calc_precio_venta_pesos"
+                                    placeholder="Calculado modificable">
+                            </div>
+                        </div>
+                        <!-- Precio venta con recargo en pesos -->
+                        <div class="grupo-input precio-destacado precio-recargo">
+                            <label for="precio-venta-recargo-pesos">Precio venta con recargo en pesos</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">attach_money</span>
+                                <input type="text" id="precio-venta-recargo-pesos"
+                                    name="calc_precio_venta_recargo_pesos" placeholder="Calculado" readonly>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- INFORMACION COMPLEMENTARIA -->
+                <!-- INFORMACION COMPLEMENTARIA -------------------------------------------------------->
                 <section class="seccion-form">
                     <h3 class="seccion-titulo">
-                        <span class="material-symbols-outlined">contact_phone</span> Complementarios
+                        <span class="material-symbols-outlined">component_exchange</span> Complementarios
                     </h3>
                     <div class="grilla-formulario">
+
+                        <!-- Costo historico en dolares neto -->
+                        <div class="grupo-input">
+                            <label for="costo-historico">Costo historico dolares</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">paid</span>
+                                <input type="text" id="costo-historico" name="costohist"
+                                    placeholder="Costo historico neto en dolares">
+                            </div>
+                        </div>
+                        <!-- Fecha ultima actualizacion -->
+                        <div class="grupo-input">
+                            <label for="fecha_ultima_actualizacion">Fecha de ultima actualizacion</label>
+                            <div class="input-con-icono">
+                                <span class="material-symbols-outlined icono-input">calendar_month</span>
+                                <input type="date" id="fecha_ultima_actualizacion" name="ultact"
+                                    placeholder="Fecha ultima actualizacion">
+                            </div>
+                        </div>
                         <!-- Observaciones -->
                         <div class="grupo-input">
                             <label for="observaciones">Observaciones</label>
                             <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">call</span>
+                                <span class="material-symbols-outlined icono-input">group_eye</span>
                                 <input type="text" id="observaciones" name="observa" placeholder="Observaciones">
                             </div>
                         </div>
-                        <!-- Fecha ultima actualizacion -->
-                        <div class="grupo-input">
-                            <label for="fecha_ultima_actualizacion">Fecha de ultima actualizacion</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">phone_in_talk</span>
-                                <input type="text" id="fecha_ultima_actualizacion" name="ultact"
-                                    placeholder="Fecha ultima actualizacion">
-                            </div>
-                        </div>
-                        <!-- Costo historico en dolares neto -->
-                        <div class="grupo-input">
-                            <label for="costo-historico">Costo historico dolares</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">mail</span>
-                                <input type="text" id="costo-historico" name="costohist"
-                                    placeholder="Costo historico neto en dolares">
-                            </div>
-                        </div>
                         <!-- ruta de la imagen -->
                         <div class="grupo-input">
-                            <label for="ruta-imagen">Ruta imagen articulo</label>
+                            <label for="ruta-imagen">Nombre archivo de imagen</label>
                             <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">mail</span>
-                                <input type="text" id="ruta-imagen" name="imagen"
-                                    placeholder="Ruta ubicacion de la imagen">
+                                <span class="material-symbols-outlined icono-input">image</span>
+                                <input type="text" id="ruta-imagen" name="imagen" placeholder="Nombre archivo imagen">
                             </div>
                         </div>
                     </div>
                 </section>
-
-
-
-                <!-- DESGLOSE DE PRECIO -->
-                <section class="seccion-form">
-                    <h3 class="seccion-titulo">
-                        <span class="material-symbols-outlined">contact_phone</span> Desglose de precio
-                    </h3>
-                    <div class="grilla-formulario">
-                        <!-- Importe neto en pesos - neto dolar * valor del dolar hoy -->
-                        <div class="grupo-input">
-                            <label for="neto-pesos">Importe neto en pesos</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">call</span>
-                                <input type="text" id="neto-pesos" name="importe-neto-pesos"
-                                    placeholder="Importe neto en pesos">
-                            </div>
-                        </div>
-
-                        <!-- // importe del iva
-                        // importe de la percepciones
-                        // importe costo bruto en pesos (neto pesos + iva + percepcion)
-                        // importe de la ganancia
-                        // importe precio final venta ( costo bruto pesos + importe de la ganancia)
-                        // importe del recargo tarjeta
-                        // importe venta con recargo por tarjets -->
-
-
-                        <!-- Fecha ultima actualizacion -->
-                        <div class="grupo-input">
-                            <label for="fecha_ultima_actualizacion">Fecha de ultima actualizacion</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">phone_in_talk</span>
-                                <input type="text" id="fecha_ultima_actualizacion" name="ultact"
-                                    placeholder="Fecha ultima actualizacion">
-                            </div>
-                        </div>
-                        <!-- Costo historico en dolares neto -->
-                        <div class="grupo-input">
-                            <label for="costo-historico">Costo historico dolares</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">mail</span>
-                                <input type="text" id="costo-historico" name="costohist"
-                                    placeholder="Costo historico neto en dolares">
-                            </div>
-                        </div>
-                        <!-- ruta de la imagen -->
-                        <div class="grupo-input">
-                            <label for="ruta-imagen">Ruta imagen articulo</label>
-                            <div class="input-con-icono">
-                                <span class="material-symbols-outlined icono-input">mail</span>
-                                <input type="text" id="ruta-imagen" name="imagen"
-                                    placeholder="Ruta ubicacion de la imagen">
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-
-
-
-
-
-
-
-
-
 
                 <div class="acciones-formulario">
                     <button id="btnGuardar" class="btn-accion guardar" type="submit">
@@ -404,10 +430,31 @@
 
     </main>
 
+    <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+    <!-- Modal de confirmación (agregado por seguridad) -->
+    <div id="modalConfirmacion" class="modal-overlay" style="display: none;">
+        <div class="modal-dialog">
+            <h3 class="modal-titulo">Confirmar eliminación</h3>
+            <p id="textoConfirmacion" class="modal-texto">¿Estás seguro de que quieres eliminar este cliente?</p>
+            <div class="modal-botones">
+                <button id="btnCancelarBorrado" class="btn-modal cancelar">Cancelar</button>
+                <button id="btnConfirmarBorrado" class="btn-modal confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Mensaje genérico (lo movemos a la raíz) -->
     <div id="mensaje" class="mensaje" style="display: none;"></div>
+
+    <!-- Ventana con la imagen ampliada -->
+    <dialog id="dialogoImagen" class="dialogo-imagen">
+        <img id="imagen-ampliada" alt="Imagen ampliada del artículo">
+    </dialog>
+
     <script src="js/comun.js"></script>
     <script src="js/articulos.js"></script>
+    <script src="/js/menu.js"></script>
 
 </body>
 

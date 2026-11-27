@@ -18,27 +18,6 @@
 <body>
     <!-- 1. Franja Superior (Header más limpia, solo con la empresa y el sistema) -->
     <header class="barra-superior">
-        <!-- NUEVO: botón de menú hamburguesa + desplegable -->
-        <div class="menu-principal">
-            <button id="btnMenu" class="btn-menu" type="button" aria-expanded="false">
-                <span class="material-symbols-outlined">menu</span>
-                Menú
-            </button>
-            <nav id="menuDesplegable" class="menu-desplegable">
-                <a href="settings.html" class="menu-item">
-                    <span class="material-symbols-outlined">settings</span>
-                    Configuración
-                </a>
-                <a href="acerca.html" class="menu-item">
-                    <span class="material-symbols-outlined">info</span>
-                    Acerca de
-                </a>
-                <a href="despedida.html" class="menu-item">
-                    <span class="material-symbols-outlined">mode_off_on</span>
-                    Cerrar Sesion
-                </a>
-            </nav>
-        </div>
         <div class="empresa-info">
             <span class="logo-empresa">PM</span>
             <span class="nombre-empresa">Promatica Computacion</span>
@@ -71,7 +50,7 @@
                 <a href="clientes.html" class="btn-ingresar">Ingresar a Clientes</a>
             </div>
 
-            <!-- Tarjeta 2: En Planificación -->
+            <!-- Tarjeta 2: Articulos (Operativo) -->
             <div class="tarjeta-modulo">
                 <!-- Estado dentro de la tarjeta -->
                 <span class="badge-estado operativo">Operativo</span>
@@ -86,11 +65,41 @@
                 <!-- <span class="btn-ingresar deshabilitado">Ingresar a Articulos</span> -->
             </div>
 
+            <!-- Tarjeta 3: Ordenes de reparacion (En planificacion) -->
+            <div class="tarjeta-modulo">
+                <!-- Estado dentro de la tarjeta -->
+                <span class="badge-estado operativo">En construccion</span>
+
+                <div class="icono-modulo">🧑‍🔧</div>
+                <div class="info-texto">
+                    <h3>Ordenes de reparacion</h3>
+                    <p>Documentacion que acompaña el ingreso de equipos o partes para su reparacion.</p>
+                </div>
+                <!-- Si está en planificación, podemos deshabilitar o cambiar el botón -->
+                <a href="ordenes_reparacion.html" class="btn-ingresar">Ingresar a Ordenes de reparacion</a>
+                <!-- <span class="btn-ingresar deshabilitado">Ingresar a Ordenes de reparacion</span> -->
+            </div>
+
+            <!-- Tarjeta 4: Planilla de caja (En planificacion) -->
+            <div class="tarjeta-modulo">
+                <!-- Estado dentro de la tarjeta -->
+                <span class="badge-estado operativo">En construccion</span>
+
+                <div class="icono-modulo">📒​</div>
+                <div class="info-texto">
+                    <h3>Planilla de Caja</h3>
+                    <p>Registracion de los movimientos monetarios de la Empresa.</p>
+                </div>
+                <!-- Si está en planificación, podemos deshabilitar o cambiar el botón -->
+                <a href="planilla_caja.html" class="btn-ingresar">Ingresar a Planilla de Caja</a>
+                <!-- <span class="btn-ingresar deshabilitado">Ingresar a Planilla de Caja</span> -->
+            </div>
+
         </div>
 
     </main>
 
-    <script src="js/script.js"></script>
+    <script src="/js/menu.js"></script>
 
 </body>
 

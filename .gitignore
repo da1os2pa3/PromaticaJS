@@ -1,6 +1,9 @@
 # Dependencias
 node_modules/
 
+# Imágenes locales
+public/img/
+
 # Archivos de entorno o sensibles
 .env
 

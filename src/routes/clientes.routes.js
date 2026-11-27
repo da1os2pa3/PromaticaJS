@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require("../config/db");
 const query = (sql, parametros) => db.promise().query(sql, parametros).then(([filas]) => filas);
 
+
 // ============================================================================
 // GET - Listar clientes
 // ============================================================================
@@ -22,13 +23,13 @@ router.get("/", async (req, res) => {
     const condiciones = [];
     const parametros = [];
 
-    // Agregamos el parametros de busqueda en las condiciones y en que camppos de la tabla
+    // Agregamos el parametros de busqueda en las condiciones y en que campos de la tabla
     if (texto !== "") {
         condiciones.push("(c.apellido LIKE ? OR c.nombres LIKE ? OR c.apenombre LIKE ?)");
         parametros.push(`%${texto}%`, `%${texto}%`, `%${texto}%`);
     }
 
-    // Agregamos el parametros de estado en las condiciones para filtrar
+    // Agregamos el parametro de estado en las condiciones para filtrar
     if (estadoFiltro === "activo") {
         condiciones.push("c.estado = 'activo'");
     } else if (estadoFiltro === "inactivo") {
@@ -62,14 +63,16 @@ router.get("/", async (req, res) => {
         `;
 
     try {
+
         const resultados = await query(sql, parametros);
         res.json(resultados);
+
     } catch (error) {
+
         console.error("Error al obtener registros:", error);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 });
-
 
 
 // ============================================================================
@@ -77,43 +80,16 @@ router.get("/", async (req, res) => {
 // ============================================================================
 router.get("/proximo-codigo", async (req, res) => {
     try {
+
         const filas = await query("SELECT MAX(codigo) AS ultimo FROM clientes");
         const proximo = (filas[0].ultimo || 0) + 1;
         res.json({ proximo });
+
     } catch (error) {
+
         console.error("Error al obtener el próximo código:", error);
         res.status(500).json({ error: "Error interno del servidor" });
-    }
-});
 
-
-
-// ============================================================================
-// GET - de búsqueda de clientes 
-// ============================================================================
-router.get("/buscar", async (req, res) => {
-
-    try {
-        const texto = (req.query.texto || "").trim();
-        const estado = req.query.estado || "activo";
-        const orden = req.query.orden === "codigo" ? "id" : "apellido, nombres";
-
-        const buscar = `%${texto}%`;
-        const condiciones = ["(apellido LIKE ? OR nombres LIKE ? OR apenombre LIKE ?)"];
-        const parametros = [buscar, buscar, buscar];
-
-        if (estado !== "todos") {
-            condiciones.push("estado = ?");
-            parametros.push(estado);
-        }
-
-        const sql = `SELECT * FROM clientes WHERE ${condiciones.join(" AND ")} ORDER BY ${orden}`;
-
-        const resultados = await query(sql, parametros);
-        res.json(resultados);
-    } catch (error) {
-        console.error("Error al buscar el cliente:", error);
-        res.status(500).json({ error: "Error al buscar el cliente" });
     }
 });
 
@@ -132,7 +108,7 @@ router.get("/:id", async (req, res) => {
             return res.status(400).json({ error: "Cliente inválido" });
         }
 
-        const [clientes] = await db.promise().query("SELECT * FROM clientes WHERE id = ?", [id]);
+        const clientes = await query("SELECT * FROM clientes WHERE id = ?", [id]);
 
         if (clientes.length === 0) {
             return res.status(404).json({ error: "El cliente no existe" });
@@ -150,17 +126,70 @@ router.get("/:id", async (req, res) => {
 // ============================================================================
 // POST - Genera el nuevo registro en la tabla clientes
 // ============================================================================
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
 
-    const datos = req.body;
+    //Garantiza que apellido (u otro) siempre sea un texto (string) limpio de espacios al principio y 
+    //al final, y que si no enviaron nada (o enviaron solo espacios), termine siendo una cadena vacía ("").
+    const codigo = Number(req.body.codigo) || 0;
+    const apellido = (req.body.apellido || "").trim();
+    const nombres = (req.body.nombres || "").trim();
+    const direccion = (req.body.direccion || "").trim();
+    const localidad = (req.body.localidad || "").trim();
+    const provincia = (req.body.provincia || "").trim();
+    const postal = (req.body.postal || "").trim();
+    const telef_pers = (req.body.telef_pers || "").trim();
+    const telef_trab = (req.body.telef_trab || "").trim();
+    const mail = (req.body.mail || "").trim();
+    const sit_fis = (req.body.sit_fis || "").trim();
+    const cuit = (req.body.cuit || "").trim();
+    const fecha_ingreso = (req.body.fecha_ingreso || "");
+    const observaciones = (req.body.observaciones || "").trim();
+    const apenombre = (apellido + " " + nombres).trim();
+    const estado = "activo"
 
-    db.query("INSERT INTO clientes SET ?", [datos], (err, resultado) => {
-        if (err) {
-            console.error("Error al insertar cliente:", err);
-            return res.status(500).json({ error: "No se pudo guardar el cliente" });
-        }
+    const datos = {
+        codigo,
+        apellido,
+        nombres,
+        direccion,
+        localidad,
+        provincia,
+        postal,
+        telef_pers,
+        telef_trab,
+        mail,
+        sit_fis,
+        cuit,
+        fecha_ingreso,
+        observaciones,
+        apenombre,
+        estado
+    };
+
+    // Validaciones
+    if (codigo <= 0) {
+        return res.status(400).json({ error: "El código no puede ser 0" });
+    }
+    if (nombres === "") {
+        return res.status(400).json({ error: "Debe existir un nombre" });
+    }
+    if (apellido === "") {
+        return res.status(400).json({ error: "Debe existir apellido" });
+    }
+    if (fecha_ingreso === "") {
+        return res.status(400).json({ error: "Coloque una fecha de ingreso" });
+    }
+
+    try {
+
+        const resultado = await query("INSERT INTO clientes SET ?", [datos])
         res.json({ id: resultado.insertId });
-    });
+
+    } catch (error) {
+        console.error("Error al insertar cliente:", error);
+        res.status(500).json({ error: "No se pudo guardar el cliente" });
+    }
+
 });
 
 
@@ -168,19 +197,72 @@ router.post("/", (req, res) => {
 // ============================================================================
 // PUT - Actualiza un cliente
 // ============================================================================
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
 
     const id = req.params.id;
-    const datos = req.body;
 
-    const query = `UPDATE clientes SET ? WHERE id = ?`;
-    db.query(query, [datos, id], (err, resultado) => {
-        if (err) {
-            console.error("Error al modificar cliente:", err);
-            return res.status(500).json({ error: "No se pudo modificar el cliente" });
+    //Garantiza que apellido (u otro) siempre sea un texto (string) limpio de espacios al principio y 
+    //al final, y que si no enviaron nada (o enviaron solo espacios), termine siendo una cadena vacía ("").
+
+    const codigo = Number(req.body.codigo) || 0;
+    const apellido = (req.body.apellido || "").trim();
+    const nombres = (req.body.nombres || "").trim();
+    const direccion = (req.body.direccion || "").trim();
+    const localidad = (req.body.localidad || "").trim();
+    const provincia = (req.body.provincia || "").trim();
+    const postal = (req.body.postal || "").trim();
+    const telef_pers = (req.body.telef_pers || "").trim();
+    const telef_trab = (req.body.telef_trab || "").trim();
+    const mail = (req.body.mail || "").trim();
+    const sit_fis = (req.body.sit_fis || "").trim();
+    const cuit = (req.body.cuit || "").trim();
+    const fecha_ingreso = (req.body.fecha_ingreso || "");
+    const observaciones = (req.body.observaciones || "").trim();
+    const apenombre = (apellido + " " + nombres).trim();
+
+    const datos = {
+        codigo,
+        apellido,
+        nombres,
+        direccion,
+        localidad,
+        provincia,
+        postal,
+        telef_pers,
+        telef_trab,
+        mail,
+        sit_fis,
+        cuit,
+        fecha_ingreso,
+        observaciones,
+        apenombre
+    };
+
+    // Validaciones
+    if (codigo <= 0) {
+        return res.status(400).json({ error: "El código no puede ser 0" });
+    }
+    if (nombres === "") {
+        return res.status(400).json({ error: "Debe existir un nombre" });
+    }
+    if (apellido === "") {
+        return res.status(400).json({ error: "Debe existir apellido" });
+    }
+    if (fecha_ingreso === "") {
+        return res.status(400).json({ error: "Coloque una fecha de ingreso" });
+    }
+
+    try {
+        const sql = `UPDATE clientes SET ? WHERE id = ?`;
+        const resultado = await query(sql, [datos, id])
+        if (resultado.affectedRows == 0) {
+            return res.status(404).json({ error: "El cliente no existe" });
         }
-        res.json({ id: resultado.insertId });
-    });
+        res.json({ mensaje: "Cliente actualizado correctamente" });
+    } catch (error) {
+        console.error("Error al modificar cliente:", error);
+        return res.status(500).json({ error: "No se pudo modificar el cliente" });
+    }
 });
 
 
@@ -188,19 +270,34 @@ router.put("/:id", (req, res) => {
 // ============================================================================
 // DELETE - Desactiva un cliente
 // ============================================================================
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
 
     const id = req.params.id;
-    const sql = "UPDATE clientes SET estado = 'inactivo' WHERE id = ?";
 
-    db.query(sql, [id], (error, _resultado) => {
-        if (error) {
-            console.error("Error al dar de baja al cliente:", error);
-            return res.status(500).json({ error: "Error al dar de baja al cliente" });
+    try {
+
+        const existentes = await query("SELECT estado FROM clientes WHERE id = ?", [id]);
+
+        // constato que el cliente exista y tenga estado activo para poder borrarlo.
+        if (existentes.length === 0) {
+            return res.status(404).json({ error: "El cliente no existe" });
+        }
+        const estado = existentes[0].estado;
+        if (estado === "inactivo") {
+            return res.status(409).json({ error: "El cliente ya está inactivo" });
         }
 
-        res.json({ mensaje: "Cliente dado de baja correctamente" });
-    });
+        const sql = "UPDATE clientes SET estado = 'inactivo' WHERE id = ?";
+        await query(sql, [id]);
+        res.json({ mensaje: "Cliente desactivado correctamente" });
+
+    } catch (error) {
+
+        console.error("Error al desactivar cliente:", error);
+        res.status(500).json({ error: "Error al desactivar cliente" });
+
+    }
+
 });
 
 
@@ -208,19 +305,35 @@ router.delete("/:id", (req, res) => {
 // ============================================================================
 // PUT - Reactivar un cliente
 // ============================================================================
-router.put("/:id/reactivar", (req, res) => {
+router.put("/:id/reactivar", async (req, res) => {
 
     const id = req.params.id;
-    const sql = "UPDATE clientes SET estado = 'activo' WHERE id = ?";
 
-    db.query(sql, [id], (error, _resultado) => {
-        if (error) {
-            console.error("Error al reactivar al cliente:", error);
-            return res.status(500).json({ error: "Error al reactivar al cliente" });
+    try {
+
+        const existentes = await query("SELECT estado FROM clientes WHERE id = ?", [id]);
+
+        // constato que el cliente exista y tenga estado inactivo para poder reactivarlo.
+        if (existentes.length === 0) {
+            return res.status(404).json({ error: "El cliente no existe" });
+        }
+        const estado = existentes[0].estado;
+        if (estado === "activo") {
+            return res.status(409).json({ error: "El cliente ya está activo" });
         }
 
-        res.json({ mensaje: "Cliente reactivado correctamente" });
-    });
+        const sql = "UPDATE clientes SET estado = 'activo' WHERE id = ?";
+        await query(sql, [id]);
+        res.json({ mensaje: "Cliente activado correctamente" });
+
+
+    } catch (error) {
+
+        console.error("Error al activar cliente:", error);
+        res.status(500).json({ error: "Error al activar cliente" });
+
+    }
 });
+
 
 module.exports = router;

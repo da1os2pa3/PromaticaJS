@@ -60,9 +60,11 @@ async function cargarCliente() {
     nombreCliente.textContent = cliente.apenombre;
 }
 
+// -----------------------------------------------------------------------------------------------------
 async function cargarMovimientos() {
 
-    // router.get('/:idCliente', async (req, res) => { - en ctacte.routes.js para obtener los movimientos de un cliente por id
+    // router.get('/:idCliente', async (req, res) => { - en ctacte.routes.js para obtener 
+    // los movimientos de un cliente por id
     const respuesta = await fetch(`/api/ctacte/${idCliente}`);
 
     if (!respuesta.ok) {
@@ -81,6 +83,7 @@ function crearCelda(texto) {
     return celda;
 }
 
+// -----------------------------------------------------------------------------------------------------
 function renderizarMovimientos(movimientos) {
 
     listaMovimientos = movimientos;
@@ -107,6 +110,7 @@ function renderizarMovimientos(movimientos) {
     }
 }
 
+// -----------------------------------------------------------------------------------------------------
 function seleccionarFila(fila) {
 
     if (filaSeleccionada !== null) {

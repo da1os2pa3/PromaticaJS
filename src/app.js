@@ -21,8 +21,8 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // Rutas de la API REST -----------------------------------------------------------
 
-// Rutas de clientes. Todo lo que agregue despues del "/clientes" lo va a manejar el archivo clientes.routes.js
-// por ejemplo "clientes/buscar", "clientes/", "clientes/:id", etc.
+// Rutas de clientes. Todo lo que agregue despues del "/clientes" lo va a manejar 
+// el archivo clientes.routes.js por ejemplo "clientes/buscar", "clientes/", "clientes/:id", etc.
 const clientesRoutes = require("./routes/clientes.routes");
 app.use("/api/clientes", clientesRoutes);
 
@@ -47,8 +47,6 @@ app.use("/api/rubros", rubrosRoutes);
 // Rutas marcas -------------------------------------------------------------------
 const marcasRoutes = require("./routes/marcas.routes");
 app.use("/api/marcas", marcasRoutes);
-
-
 
 
 

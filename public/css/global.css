@@ -428,3 +428,73 @@ body {
 .aviso-error {
     background-color: var(--color-peligro);
 }
+
+
+
+
+
+
+
+/* --- Menú desplegable -------------------------------------------------------------------------- */
+.menu-principal {
+    position: relative;
+}
+
+/* CABECERA - MENU HAMBURGUESA */
+.btn-menu {
+    display: inline-flex;
+    /* ícono y texto en una fila */
+    align-items: center;
+    /* alineados verticalmente */
+    gap: 8px;
+    /* separación entre el ícono y "Menú" */
+    background: none;
+    border: 1px solid var(--color-borde);
+    color: var(--color-texto);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* CABECERA - MENU HAMBURGUESA -----------------------------------------------------------------*/
+.btn-menu:hover {
+    background-color: var(--color-borde);
+}
+
+.menu-desplegable {
+    display: none;
+    /* oculto por defecto */
+    position: absolute;
+    /* flota sin empujar nada */
+    top: calc(100% + 12px);
+    /* debajo del botón, pasando el borde de la barra */
+    left: 0;
+    min-width: 220px;
+    background-color: var(--color-barra);
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    padding: 6px 0;
+    z-index: 100;
+    /* por encima del contenido */
+}
+
+.menu-desplegable.abierto {
+    display: block;
+    /* visible cuando JS le agrega la clase "abierto" */
+}
+
+.menu-item {
+    display: flex;
+    /* ícono y texto en una fila */
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: var(--color-texto);
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    background-color: var(--color-borde);
+}

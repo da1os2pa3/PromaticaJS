@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require("../config/db");
 const query = (sql, parametros) => db.promise().query(sql, parametros).then(([filas]) => filas);
 
+
 // ============================================================================
 // GET - Obtener los nombres de los rubros
 // ============================================================================

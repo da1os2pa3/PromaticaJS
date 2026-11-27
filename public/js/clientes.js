@@ -119,6 +119,7 @@ function renderizarFilas(clientes) {
         `;
 
         fila.addEventListener("click", function () {
+
             const todasLasFilas = Array.from(cuerpoTabla.querySelectorAll("tr"));
             indiceFilaActual = todasLasFilas.indexOf(fila);
 
@@ -140,134 +141,65 @@ function renderizarFilas(clientes) {
 }
 
 // GET Carga los usuarios desde el servidor -------------------------------------------------------------
-function cargarClientes(orden = ordenarPor.value) {
+async function cargarClientes(orden = ordenarPor.value) {
 
     const estadoSeleccionado = filtrarEstado.value;
+    const texto = textoBuscar.value.trim();
 
-    const url = `http://localhost:3000/api/clientes?estado=${estadoSeleccionado}&orden=${orden}`;
+    const url = `http://localhost:3000/api/clientes?texto=${encodeURIComponent(texto)}&estado=${estadoSeleccionado}&orden=${orden}`;
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) throw new Error("ERROR_SERVIDOR");
-            return response.json();
-        })
-        .then(clientes => {
+    try {
 
-            renderizarFilas(clientes);
+        const response = await fetch(url)
 
-            if (idSeleccionado) {
+        if (!response.ok) throw new Error("ERROR_SERVIDOR");
+        const clientes = await response.json();
 
-                const filas = document.querySelectorAll("#tablaClientes tbody tr");
+        renderizarFilas(clientes);
 
-                filas.forEach(fila => {
-                    const idFila = parseInt(fila.querySelector("td").textContent);
-                    if (idFila === idSeleccionado) {
-                        document.querySelectorAll("#tablaClientes tbody tr").forEach(f => {
-                            f.classList.remove("fila-seleccionada");
-                        });
-                        fila.classList.add("fila-seleccionada");
-                        clienteSeleccionado = clientes.find(u => u.id === idSeleccionado);
-                        fila.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        idSeleccionado = null;
-                    }
-                });
-            }
-        })
-        .catch(error => {
-            console.error("Error al cargar:", error);
-            renderizarFilas([]);
-            mostrarAviso("✕ No se pudo conectar con el servidor.", "error");
-            // mensajeExito.textContent = "✕ No se pudo conectar con el servidor.";
-            // mensajeExito.style.color = "red";
-        });
-}
+        if (idSeleccionado) {
+
+            const filas = document.querySelectorAll("#tablaClientes tbody tr");
+
+            filas.forEach(fila => {
+                const idFila = parseInt(fila.querySelector("td").textContent);
+                if (idFila === idSeleccionado) {
+                    document.querySelectorAll("#tablaClientes tbody tr").forEach(f => {
+                        f.classList.remove("fila-seleccionada");
+                    });
+                    fila.classList.add("fila-seleccionada");
+                    clienteSeleccionado = clientes.find(u => u.id === idSeleccionado);
+                    fila.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    idSeleccionado = null;
+                }
+            });
+        }
+
+    } catch (error) {
+
+        console.error("Error al cargar:", error);
+        renderizarFilas([]);
+        mostrarAviso("✕ No se pudo conectar con el servidor.", "error");
+    }
+
+};
 
 
 cargarClientes();
 
 
-
-// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-// Bloque que trabaja sobre la barra superior (ordenar, buscar y filtrar)
-// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-// ORDEN GRID ------------------------------------------------------------------------------------------------
-// evento que se dispara al cambiar el orden (values="apellido o codigo). 
-// Tambien evalua si hay texto de busqueda
-ordenarPor.addEventListener("change", function () {
-    const orden = ordenarPor.value;
-    // esto trae el texto que haya en el input buscar
-    const texto = textoBuscar.value.trim();
-    if (texto !== "") {
-        buscarClientes();
-    } else {
-        cargarClientes(orden);
-    }
-});
-
-
 // BUSQUEDA GRID -------------------------------------------------------------------------------------------
-// Cuando hago click en la lupa, se llama a la funcion "buscarClientes" - Funciona con Enter o con click en la lupa
-document.getElementById("btnBuscar").addEventListener("click", buscarClientes);
+document.getElementById("btnBuscar").addEventListener("click", () => { cargarClientes(); });
 textoBuscar.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
-        buscarClientes();
+        cargarClientes();
     }
 });
-
-
-// BUSQUEDA GRID --------------------------------------------------------------------------------------------
-// Buscar clientes en el GRID y los filtra
-function buscarClientes() {
-
-    //const texto = document.getElementById("textoBuscar").value.trim();
-    const texto = textoBuscar.value.trim();
-
-    // guarda string "apellido" o "codigo"
-    const orden = ordenarPor.value;
-    const incluirInactivos = filtrarEstado.value === "todos";
-
-    const url = `http://localhost:3000/api/clientes/buscar?texto=${encodeURIComponent(texto)}&estado=${filtrarEstado.value}&orden=${orden}`;
-
-    fetch(url)
-
-        .then(response => {
-            if (response.status === 403) {
-                throw new Error("SIN_PERMISO");
-            }
-            if (!response.ok) {
-                throw new Error("ERROR_SERVIDOR");
-            }
-            return response.json();
-        })
-        .then(clientes => {
-            renderizarFilas(clientes);
-        })
-        .catch(error => {
-            console.error("Error al buscar el cliente:", error);
-
-            renderizarFilas([]);
-
-            if (error.message === "SIN_PERMISO") {
-                mostrarAviso("✕ No tenés acceso a este módulo.", "error");
-                // mensajeExito.textContent = "✕ No tenés acceso a este módulo.";
-            } else {
-                mostrarAviso("✕ No se pudo conectar con el servidor.", "error");
-                // mensajeExito.textContent = "✕ No se pudo conectar con el servidor.";
-            }
-            // mensajeExito.style.color = "red";
-        });
-}
 
 
 // Recarga el GRID segun parametros ---------------------------------------------------------------------
 function recargarSegunBusqueda() {
-    const texto = document.getElementById("textoBuscar").value.trim();
-    if (texto !== "") {
-        buscarClientes();
-    } else {
-        cargarClientes(ordenarPor.value);
-    }
+    cargarClientes(ordenarPor.value);
     document.activeElement.blur();
 }
 
@@ -277,7 +209,7 @@ function recargarSegunBusqueda() {
 ordenarPor.addEventListener("change", recargarSegunBusqueda);
 filtrarEstado.addEventListener("change", recargarSegunBusqueda);
 
-// MOSTRAR GRID COMPLETO - Boton con el simbolo de recarga
+// MOSTRAR GRID COMPLETO - Boton con el simbolo de recarga ----------------------------------------------
 btnMostrarTodos.addEventListener("click", function () {
     textoBuscar.value = "";
     cargarClientes(ordenarPor.value);
@@ -349,6 +281,7 @@ btnNuevo.addEventListener("click", async function () {
     }
 });
 
+
 // BOTON EDITAR --------------------------------------------------------------------------------------
 btnEditar.addEventListener("click", function () {
 
@@ -383,79 +316,78 @@ btnBorrar.addEventListener("click", function () {
         mostrarAviso('Seleccioná un cliente para borrar', 'alerta');
         return;
     }
-
     textoConfirmacion.textContent =
         `¿Está seguro que desea borrar este cliente ${clienteSeleccionado.apenombre}?`;
     modalConfirmacion.style.display = "flex";
 })
 
-// BOTON CONFIRMA BORRADO    -----------------------------------------------------------------------------
-btnConfirmarBorrado.addEventListener("click", function () {
 
-    fetch(`http://localhost:3000/api/clientes/${clienteSeleccionado.id}`, {
-        method: "DELETE"
-    })
-        .then(response => {
-            if (response.status === 403) {
-                throw new Error("SIN_PERMISO");
-            }
-            if (!response.ok) {
-                throw new Error("Error HTTP: " + response.status);
-            }
-            return response.json();
+// BOTON CONFIRMA BORRADO ----------------------------------------------------------------------------
+btnConfirmarBorrado.addEventListener("click", async function () {
+
+    try {
+
+        const response = await fetch(`http://localhost:3000/api/clientes/${clienteSeleccionado.id}`, {
+            method: "DELETE"
         })
-        .then(data => {
-            modalConfirmacion.style.display = "none";
-            mostrarAviso("✓ Cliente borrado correctamente", "exito");
-            // mostrarMensaje("✓ Cliente borrado correctamente");
-            cargarClientes();
-            clienteSeleccionado = null;
-        })
-        .catch(error => {
-            console.error("Error al borrar:", error);
-            modalConfirmacion.style.display = "none";
-            if (error.message === "SIN_PERMISO") {
-                mostrarAviso("✕ No tenés permiso para borrar.", "alerta");
-            } else {
-                mostrarAviso("✕ No se pudo borrar el cliente.", "error");
-            }
-        });
+
+        const data = await response.json()
+
+        if (!response.ok) {
+            throw new Error(data.error)
+        }
+
+        modalConfirmacion.style.display = "none";
+        mostrarAviso("✓ Cliente borrado correctamente", "exito");
+        await cargarClientes();
+        clienteSeleccionado = null;
+
+    } catch (error) {
+
+        console.error("Error al borrar:", error);
+        modalConfirmacion.style.display = "none";
+        mostrarAviso("✕ " + error.message, "error");
+    }
+
 });
 
 
 // BOTON REACTIVAR -----------------------------------------------------------------------------------
-btnReactivar.addEventListener("click", function () {
+btnReactivar.addEventListener("click", async function () {
 
+    // 1) Verificar si hay un cliente seleccionado
     if (clienteSeleccionado === null) {
         mostrarAviso('Seleccioná un cliente para reactivar', 'alerta');
         return;
     }
-
     // VALIDACIÓN: Si ya está activo, frenamos acá
     if (clienteSeleccionado.estado === 'activo') {
         mostrarAviso('Este cliente ya se encuentra activo', 'alerta');
         return;
     }
 
-    fetch(`http://localhost:3000/api/clientes/${clienteSeleccionado.id}/reactivar`, {
-        method: "PUT"
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Error HTTP: " + response.status);
-            }
-            return response.json();
+    try {
+
+        const response = await fetch(`http://localhost:3000/api/clientes/${clienteSeleccionado.id}/reactivar`, {
+            method: "PUT"
         })
-        .then(data => {
-            mostrarAviso("✓ Cliente reactivado correctamente)", "exito");
-            clienteSeleccionado = clienteSeleccionado.id;
-            cargarClientes();
-            clienteSeleccionado = null;
-        })
-        .catch(error => {
-            console.error("Error al reactivar:", error);
-            mostrarAviso("✕ No se pudo reactivar.", "error");
-        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error)
+        }
+
+        mostrarAviso("✓ Cliente reactivado correctamente", "exito");
+        idSeleccionado = clienteSeleccionado.id;
+        await cargarClientes();
+
+    } catch (error) {
+
+        console.error("Error al reactivar:", error);
+        mostrarAviso("✕ " + error.message, "error");
+
+    }
 });
 
 
@@ -499,7 +431,7 @@ btnSalir.addEventListener("click", function () {
 
 
 // GUARDAR - Botón guardar del formulario --------------------------------------------------------------
-formulario.addEventListener("submit", function (event) {
+formulario.addEventListener("submit", async function (event) {
 
     event.preventDefault();
 
@@ -515,64 +447,53 @@ formulario.addEventListener("submit", function (event) {
         }
     }
 
-    if (modo === "nuevo") {
-        fetch("http://localhost:3000/api/clientes", {
-            method: "POST",
+    const { url, metodo } = modo === "nuevo"
+        ? { url: "http://localhost:3000/api/clientes", metodo: "POST" }
+        : { url: `http://localhost:3000/api/clientes/${clienteSeleccionado.id}`, metodo: "PUT" };
+
+
+    try {
+
+        const response = await fetch(url, {
+            method: metodo,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datos)
         })
-            .then(response => {
-                if (response.status === 403) throw new Error("SIN_PERMISO");
-                if (!response.ok) throw new Error("Error HTTP: " + response.status);
-                return response.json();
-            })
-            .then(data => {
-                mostrarAviso("✓ Cliente guardado correctamente", "exito");
-                // mostrarMensaje("✓ Cliente guardado correctamente");
-                idSeleccionado = data.id;
-                cargarClientes();
-                clienteSeleccionado = null;
-                vistaFormulario.style.display = "none";
-                vistaListado.style.display = "block";
-                // Activa la barra superior
-                controlesSuperiores.classList.remove('desactivada');
-                controlesSuperiores.inert = false;
 
-            })
-            .catch(error => {
-                console.error("Error en fetch:", error);
-                mostrarAviso("✕ No se pudo guardar el cliente.", "error");
-            });
+        const data = await response.json();
 
-    } else if (modo === "editar") {
+        if (!response.ok) {
+            throw new Error(data.error);
+        }
 
-        fetch(`http://localhost:3000/api/clientes/${clienteSeleccionado.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos)
-        })
-            .then(response => {
-                if (response.status === 403) throw new Error("SIN_PERMISO");
-                if (!response.ok) throw new Error("Error HTTP: " + response.status);
-                return response.json();
-            })
-            .then(data => {
-                // mostrarMensaje("✓ Cliente modificado correctamente");
-                mostrarAviso("✓ Cliente modificado correctamente", "exito");
-                idSeleccionado = clienteSeleccionado.id;
-                cargarClientes();
-                clienteSeleccionado = null;
-                vistaFormulario.style.display = "none";
-                vistaListado.style.display = "block";
-                // Desactiva la barra superior
-                controlesSuperiores.classList.remove('desactivada');
-                controlesSuperiores.inert = false;
+        vistaFormulario.style.display = "none";
+        vistaListado.style.display = "block";
+        // Desactiva la barra superior
+        controlesSuperiores.classList.remove('desactivada');
+        controlesSuperiores.inert = false;
 
-            })
-            .catch(error => {
-                mostrarAviso("✕ No se pudo guardar el cliente.", "error");
-            });
+        if (modo === "nuevo") {
+
+            mostrarAviso("✓ Datos guardados correctamente", "exito");
+            idSeleccionado = data.id;
+
+
+        } else {
+
+            mostrarAviso("✓ Cliente modificado correctamente", "exito");
+            idSeleccionado = clienteSeleccionado.id;
+
+        }
+
+        await cargarClientes();
+
+    } catch (error) {
+
+        console.error("Error al guardar el cliente:", error);
+        mostrarAviso("✕ " + error.message, "error");
+
     }
+
 });
 
 
@@ -587,13 +508,12 @@ inputNombre.addEventListener('input', actualizarApNombre);
 inputApellido.addEventListener('input', actualizarApNombre);
 
 
-
-// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // Bloque funciones variadas
-// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-// Teclado --------------------------------------------------------------------------------------------
+// Teclado -------------------------------------------------------------------------------------------
 document.addEventListener("keydown", (e) => {
 
     if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "SELECT") {
@@ -638,6 +558,7 @@ function validarCuit(valor) {
 }
 
 function controlarCuit() {
+
     const inputCuit = document.getElementById('cuit');
     const errorCuit = document.getElementById('errorCuit');
     const valor = inputCuit.value.trim();
@@ -686,35 +607,3 @@ btnEstadoCuenta.addEventListener("click", async function () {
     }
 });
 
-
-
-
-
-
-// MENSAJES Y SONIDOS SISTEMA --------------------------------------------------------------------
-// function mostrarMensaje(texto, color = "green") {
-
-//     sonidoOk();
-//     mensaje.textContent = texto;
-//     mensaje.style.color = color;
-//     mensaje.style.display = "block";
-
-//     setTimeout(() => {
-//         mensaje.style.display = "none";
-//     }, 3000);
-// }
-
-
-// function sonidoOk() {
-
-//     if (audioContext.state === "suspended") audioContext.resume();
-
-//     const oscilador = audioContext.createOscillator();
-//     const ganancia = audioContext.createGain();
-//     oscilador.connect(ganancia);
-//     ganancia.connect(audioContext.destination);
-//     oscilador.frequency.value = 800;
-//     ganancia.gain.value = 0.1;
-//     oscilador.start();
-//     oscilador.stop(audioContext.currentTime + 0.12);
-// }
